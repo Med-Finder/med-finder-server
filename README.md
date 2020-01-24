@@ -2,7 +2,7 @@
 
 ### To start the server :
 
-`npm run dev2`
+`npm run dev`
 
 Unfortunately due to babel, the err will reference the **build** file, not the actual **src** file that we use.
 
