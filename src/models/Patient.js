@@ -11,7 +11,7 @@ const patientSchema = `CREATE TABLE IF NOT EXISTS patient (
     geoLocation VARCHAR(255)  NOT NULL,
     image  VARCHAR(255),
     medicalRecordID REFERENCES medicalRecord(medicalRecordID)
-    doctorID REFERENCES patientDactor(doctorID),
+    doctor-id REFERENCES patientDactor(doctorID),
     );`;
 
 // conn.query(userSchema, (err, data) => {
