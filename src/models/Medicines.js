@@ -1,0 +1,17 @@
+const medicineSchema = `CREATE TABLE IF NOT EXISTS medicine (
+    medicineID SERIAL PRIMARY KEY UNIQUE NOT NULL,
+    name VARCHAR(255)  NOT NULL,
+    medicineClass VARCHAR(255)  NOT NULL,
+    cost VARCHAR(255)  NOT NULL ,
+    administrationRoute VARCHAR(255)  NOT NULL,
+    dosageForm VARCHAR(255)   NOT NULL,
+    dosageschedule VARCHAR(255)  NOT NULL,
+    medicineUnit VARCHAR(255)  NOT NULL,
+    expiringDay DATE NOT NULL,
+    prescriptionStatus VARCHAR(255)  NOT NULL,
+    code  VARCHAR(255),
+    warning  VARCHAR(255),
+    sameAs  VARCHAR(255),
+    quantity  VARCHAR(255),
+    pharmacy-id REFERENCES pharmacyMedicine(pharmacyID),
+    );`;
