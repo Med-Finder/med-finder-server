@@ -1,9 +1,8 @@
 var pg = require('pg');
-var conString = "postgres://postgres:123456@localhost:5000/medFinder";
+import config from "../config";
 
-var db = new pg.Client(conString);
+const db = new pg.Client(config.databaseURL);
 db.connect();
 
-db.query(`"SELECT * FROM *`)
 
-console.log('ddddddddddddd')
+export default db
