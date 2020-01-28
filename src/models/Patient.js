@@ -36,12 +36,12 @@ const Patient = new mongoose.Schema(
     gender: String, //we can add a validator here
 
     medicalRecord: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "MedicalRecord",
       required: true
     },
     doctor: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "MedicalRecord",
       required: true
     } // should we have this

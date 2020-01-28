@@ -6,11 +6,8 @@ export default async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
   Logger.info("✌️ DB loaded and connected!");
 
-  //   const userModel = {
-  //     name: 'userModel',
-  //     // Notice the require syntax and the '.default'
-  //     model: require('../models/user').default,
-  //   };
+  const models = require("./../models");
+  Logger.info("✌️ all model are loaded!");
 
   await expressLoader({ app: expressApp });
   Logger.info("✌️ Express loaded");
