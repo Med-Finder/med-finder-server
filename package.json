@@ -9,7 +9,7 @@
     "server": "nodemon build/index.js",
     "build": "babel src -d build -w",
     "onlyServer": "concurrently --kill-others-on-fail \"npm run build\" \"npm run server\"",
-    "client": "npm run start --prefix ../client",
+    "client": "npm run start --prefix ../med-finder-client",
     "dev": "concurrently --kill-others-on-fail \"npm run onlyServer\" \"npm run client\""
   },
   "keywords": [],
@@ -24,6 +24,7 @@
     "http-proxy-middleware": "^0.20.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.8.9",
+    "validator": "^12.2.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
