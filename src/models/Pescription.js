@@ -1,0 +1,15 @@
+import mongoose from "mongoose";
+
+const Pescription = new mongoose.Schema(
+  {
+    // makes no sense to me tbh
+    doctor: { type: Schema.Types.ObjectId, ref: "Doctor", required: true },
+    patient: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
+    medicine: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
+    dosage: String, //should be revised : structure wise
+    schedule: String //should be revised : structure wise
+  },
+  { timestamps: true }
+);
+// should a pharmacy has it's own medicine table with all of the quantities
+export default mongoose.model("Pescription", Pescription);
