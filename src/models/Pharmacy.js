@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Pharmacy = new mongoose.Schema(
   {
-    //name ??
+    name: String,
     adress: String, //should be revised : structure wise
     contact: String, //should be revised : structure wise
     geoLocation: String, //should be revised : structure wise

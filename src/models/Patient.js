@@ -35,8 +35,6 @@ const Patient = new mongoose.Schema(
 
     gender: String, //we can add a validator here
 
-    geoLocation: String, // why does he need it ?
-
     medicalRecord: {
       type: Schema.Types.ObjectId,
       ref: "MedicalRecord",
