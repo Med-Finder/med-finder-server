@@ -4,8 +4,9 @@ const Pharmacy = new mongoose.Schema(
   {
     name: String,
     adress: String, //should be revised : structure wise
-    contact: String, //should be revised : structure wise
-    geoLocation: String, //should be revised : structure wise
+    phoneNumber: String, //should be revised : structure wise
+    latitude: String,
+    longitude:String,
     openingHours: String, //should be revised : structure wise
     feedbacks: String //do we need this
   },
