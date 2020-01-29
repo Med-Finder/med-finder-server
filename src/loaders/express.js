@@ -8,7 +8,8 @@ export default ({ app }) => {
   app.get("/status", (req, res) => {
     res.status(200).end();
   });
-
+  app.get('/pharmacy',(req, res)=> console.log("eszszsz"))
+  
   app.head("/status", (req, res) => {
     res.status(200).end();
   });

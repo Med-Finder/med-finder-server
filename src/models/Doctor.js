@@ -26,9 +26,11 @@ const Doctor = new mongoose.Schema(
 
     image: String,
 
-    geoLocation: String,
+    latitude: String,
+    
+    longitude:String, 
 
-    openingHours: String, // should be revised
+    openingHours: String, 
 
     password: { type: String, required: true }
   },

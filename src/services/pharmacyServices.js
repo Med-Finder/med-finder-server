@@ -2,7 +2,6 @@ import Pharmacy from '../models/Pharmacy'
 
 export default class PharmacyServices {
     constructor(){
-
     }
     async createPharmacy(pharmacy){
         try {

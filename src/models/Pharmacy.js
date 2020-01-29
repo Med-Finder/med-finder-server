@@ -8,7 +8,10 @@ const Pharmacy = new mongoose.Schema(
     latitude: String,
     longitude:String,
     openingHours: String, //should be revised : structure wise
-    feedbacks: String //do we need this
+    feedbacks: String, 
+    medicines: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Medicine", required: true } // should be tested
+    ] //do we need this
   },
   { timestamps: true }
 );
