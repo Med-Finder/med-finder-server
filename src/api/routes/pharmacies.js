@@ -30,7 +30,20 @@ const route = Router();
   route.get('/locateAllPharmacies',  async (req, res, next) => {
     console.log("locate pharmacy route")
        pharmacyServicesInstance.locatePharmacies()
-       .then(data => console.log(data, "located pharmacies")) 
+       .then(data => {
+         var result = data.map((pharmacy)=>{
+             var obj = {};
+             obj.lat = pharmacy.latitude;
+             obj.lng = pharmacy.longitude;
+             obj.label = pharmacy.name[0].toUpperCase();
+             obj.draggable = false;
+             obj.title = 'Hopitale ' + pharmacy.name;
+             obj.www = `https://www.Hopitale-${pharmacy.name.slice(0,5)}.com/` ;
+             return obj; 
+            
+          })
+          res.json(result)
+       }) 
        .catch(err => console.log(err))
        return res.status(200); 
  });
