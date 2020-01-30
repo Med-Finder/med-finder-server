@@ -14,19 +14,28 @@ const route = Router();
   app.use(bodyParser.json());
   app.use('/pharmacy', route);
   route.get('/', (req, res)=> console.log('pharmacy route working'))
+  const  pharmacyServicesInstance = new PharmacyServices()
+  
   route.post('/create',  async (req, res, next) => {
-     try{
+    
      // console.log("req body", req.body);
-      const pharmacyInput = {...req.body}
-      var servi = new PharmacyServices()
-      servi.createPharmacy(pharmacyInput)
-      .then(data => console.log(data, "aaaaaaaaaaaaaaaaaaaaa")) 
-      return res.status(200);
-     } 
-     catch(err){
-       next(err)
-     }
+     const pharmacyInput = {...req.body}
+        
+        pharmacyServicesInstance.createPharmacy(pharmacyInput)
+        .then(data => console.log(data, "created pharmacy"))
+        .catch(err => console.log(err)) 
+        return res.status(200);
+
   });
+
+  route.get('/locateAllPharmacies',  async (req, res, next) => {
+    console.log("locate pharmacy route")
+       pharmacyServicesInstance.locatePharmacies()
+       .then(data => console.log(data, "aaaaaaaaaaaaaaaaa")) 
+       .catch(err => console.log(err))
+       return res.status(200);
+  
+ });
 };
 
 

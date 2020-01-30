@@ -1,7 +1,9 @@
 import Pharmacy from '../models/Pharmacy'
 var pharmacy = new Pharmacy()
 export default class PharmacyServices {
-    constructor(pharmacy){}
+    constructor(pharmacy){
+      pharmacy = new Pharmacy()
+    }
     async createPharmacy(pharmacy){
         try {
             const newPharmacy = new Pharmacy({
@@ -15,14 +17,18 @@ export default class PharmacyServices {
               "feedbacks": pharmacy.feedbacks,
               "password": pharmacy.password
           });
-            console.log('before save');
-               let savedPharmacy = await newPharmacy.save(); //when fail its goes to catch
-            console.log(savedPharmacy, "saved in database"); //when successsss it print.
-            return newPharmacy
-            console.log('after save');
+            
+            let savedPharmacy = await newPharmacy.save(); //when fail its goes to catch
+            console.log("pharmacy created in database in database"); //when successsss it print.
+            return savedPharmacy
           } catch (err) {
             console.log('err' + err);
             res.status(500).send(err);
           }
     }
+   async locatePharmacies(){
+   var found = await  Pharmacy.find({})
+   return found
+   }
+
 }
