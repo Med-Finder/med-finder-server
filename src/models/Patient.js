@@ -13,7 +13,7 @@ const Patient = new mongoose.Schema(
       required: [true, "Please enter a valid last name"]
     },
 
-    password: { type: String, required: true },
+    : { type: String, required: true },
 
     phoneNumber: String, // should it be required ?
 

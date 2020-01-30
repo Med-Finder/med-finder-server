@@ -30,8 +30,10 @@ const Doctor = new mongoose.Schema(
     
     longitude:String, 
 
-    openingHours: String, 
-
+    openingHour: String, 
+    
+    closingHour: String, 
+    
     password: { type: String, required: true }
   },
   { timestamps: true }

@@ -10,7 +10,7 @@
     "build": "babel src -d build -w",
     "onlyServer": "concurrently --kill-others-on-fail \"npm run build\" \"npm run server\"",
     "client": "npm run start --prefix ../med-finder-client",
-    "dev": "concurrently --kill-others-on-fail \"npm run onlyServer\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run onlyServer\"   \"npm run client\""
   },
   "keywords": [],
   "author": "",

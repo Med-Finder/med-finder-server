@@ -7,8 +7,11 @@ const Pharmacy = new mongoose.Schema(
     phoneNumber: String, //should be revised : structure wise
     latitude: String,
     longitude:String,
-    openingHours: String, //should be revised : structure wise
-    feedbacks: String, 
+    openingHour: String,
+    closingHour: String, //should be revised : stsructure wise
+    feedbacks: String,
+    email: String, 
+    password: String,  
     medicines: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Medicine", required: true } // should be tested
     ] //do we need this

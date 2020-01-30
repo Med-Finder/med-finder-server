@@ -1,8 +1,8 @@
 import { Router } from "express";
-import phar from './routes/pharmacies'
+import pharmacyRoute from './routes/pharmacies'
 export default () => {
    const app = Router();
-    phar(app)
-  // app.get('/', (req,res)=> console.log("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere"))
-   return app;
+   console.log("rooooute is getting here")
+   pharmacyRoute(app)
+    return app;
 };
