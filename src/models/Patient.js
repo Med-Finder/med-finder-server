@@ -13,8 +13,6 @@ const Patient = new mongoose.Schema(
       required: [true, "Please enter a valid last name"]
     },
 
-    : { type: String, required: true },
-
     phoneNumber: String, // should it be required ?
 
     email: {
@@ -26,7 +24,9 @@ const Patient = new mongoose.Schema(
           throw new Error({ error: "Invalid Email adress" });
       }
     },
-
+ 
+    password: { type: String, required: true }, 
+    
     adress: String, //should be revised
 
     image: String, //should be revised

@@ -38,7 +38,7 @@ const route = Router();
  route.post('/search',  async (req, res, next) => {
     let input = {...req.body}
     console.log(input)
-     await pharmacyServicesInstance.searchPharmacies(input.query)
+     pharmacyServicesInstance.searchPharmacies(input.query)
      .then(data => console.log(data, "search result pharmacies")) 
      .catch(err => console.log(err))
      return res.status(200); 
