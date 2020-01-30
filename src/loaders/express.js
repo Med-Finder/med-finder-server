@@ -12,8 +12,7 @@ export default ({ app }) => {
   app.head("/status", (req, res) => {
     res.status(200).end();
   });
-  app.get('/', (req, res)=> console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'))
-
+  
   app.enable("trust proxy");
 
   app.use(cors());

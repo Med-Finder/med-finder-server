@@ -1,22 +1,24 @@
 import Pharmacy from '../models/Pharmacy'
-
+var pharmacy = new Pharmacy()
 export default class PharmacyServices {
-    constructor(){
-    }
+    constructor(pharmacy){}
     async createPharmacy(pharmacy){
         try {
             const newPharmacy = new Pharmacy({
-              'name': newPharmacy.name,
-              'adress' :newPharmacy.adress,
-              'phoneNumber':newPharmacy.contact,
-              'latitude':newPharmacy.latitude,
-              'longitude':newPharmacy.longitude,
-              'openingHours':newPharmacy.openingHours,
-              'feedbacks':newPharmacy.feedbacks
-            });
+              "name": pharmacy.name,
+              "adress": pharmacy.adress,
+              "phoneNumber": pharmacy.phoneNumber,
+              "latitude": pharmacy.latitude,
+              "longitude": pharmacy.longitude,
+              "openingHour": pharmacy.openingHour,
+              "closingHour": pharmacy.closingHour,
+              "feedbacks": pharmacy.feedbacks,
+              "password": pharmacy.password
+          });
             console.log('before save');
-            let savedPharmacy = await newPharmacy.save(); //when fail its goes to catch
-            console.log(newPharmacy); //when success it print.
+               let savedPharmacy = await newPharmacy.save(); //when fail its goes to catch
+            console.log(savedPharmacy, "saved in database"); //when successsss it print.
+            return newPharmacy
             console.log('after save');
           } catch (err) {
             console.log('err' + err);

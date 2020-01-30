@@ -2,6 +2,9 @@
 import { Router } from 'express';
 import middlewares from '../middlewares';
 import bodyParser from 'body-parser';
+import Pharmacy from '../../models/Pharmacy'
+import PharmacyServices from '../../services/pharmacyServices'
+
 const route = Router();
 
  const pharmacyRoute = (app) => {
@@ -15,7 +18,9 @@ const route = Router();
      try{
      // console.log("req body", req.body);
       const pharmacyInput = {...req.body}
-      console.log(pharmacyInput)
+      var servi = new PharmacyServices()
+      servi.createPharmacy(pharmacyInput)
+      .then(data => console.log(data, "aaaaaaaaaaaaaaaaaaaaa")) 
       return res.status(200);
      } 
      catch(err){
