@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-
+const searchable = require('mongoose-regex-search');
 const Pharmacy = new mongoose.Schema(
   {
-    name: String,
-    adress: String, //should be revised : structure wise
+    name: { type: String, searchable: true },
+    adress:{ type: String, searchable: false },
     phoneNumber: String, //should be revised : structure wise
     latitude: String,
     longitude:String,
@@ -19,4 +19,5 @@ const Pharmacy = new mongoose.Schema(
   { timestamps: true }
 );
 // should a pharmacy has it's own medicine table with all of the quantities
+Pharmacy.plugin(searchable);
 export default mongoose.model("Pharmacy", Pharmacy);

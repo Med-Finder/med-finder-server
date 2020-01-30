@@ -24,6 +24,7 @@
     "http-proxy-middleware": "^0.20.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.8.9",
+    "mongoose-regex-search": "^0.8.14",
     "validator": "^12.2.0",
     "winston": "^3.2.1"
   },

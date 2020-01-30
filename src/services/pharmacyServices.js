@@ -27,8 +27,12 @@ export default class PharmacyServices {
           }
     }
    async locatePharmacies(){
-   var found = await  Pharmacy.find({})
-   return found
+    var found = await  Pharmacy.find({})
+    return found;
    }
-
+   async searchPharmacies(query){
+    var searchResult = await Pharmacy.search(query)
+    return searchResult;
+    }
+   
 }

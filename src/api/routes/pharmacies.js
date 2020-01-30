@@ -25,17 +25,24 @@ const route = Router();
         .then(data => console.log(data, "created pharmacy"))
         .catch(err => console.log(err)) 
         return res.status(200);
-
   });
 
   route.get('/locateAllPharmacies',  async (req, res, next) => {
     console.log("locate pharmacy route")
        pharmacyServicesInstance.locatePharmacies()
-       .then(data => console.log(data, "aaaaaaaaaaaaaaaaa")) 
+       .then(data => console.log(data, "located pharmacies")) 
        .catch(err => console.log(err))
-       return res.status(200);
-  
+       return res.status(200); 
  });
+
+ route.post('/search',  async (req, res, next) => {
+    let input = {...req.body}
+    console.log(input)
+     await pharmacyServicesInstance.searchPharmacies(input.query)
+     .then(data => console.log(data, "search result pharmacies")) 
+     .catch(err => console.log(err))
+     return res.status(200); 
+});
 };
 
 
