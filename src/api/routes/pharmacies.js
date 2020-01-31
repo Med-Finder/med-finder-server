@@ -2,15 +2,14 @@
 import { Router } from 'express';
 import middlewares from '../middlewares';
 import bodyParser from 'body-parser';
-import Pharmacy from '../../models/Pharmacy'
 import PharmacyServices from '../../services/pharmacyServices'
 
 const route = Router();
 
  const pharmacyRoute = (app) => {
-  // app.use(bodyParser.urlencoded({
-  //   extended: true
-  // }));
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
   app.use(bodyParser.json());
   app.use('/pharmacy', route);
   route.get('/', (req, res)=> console.log('pharmacy route working'))
@@ -37,8 +36,8 @@ const route = Router();
              obj.lng = pharmacy.longitude;
              obj.label = pharmacy.name[0].toUpperCase();
              obj.draggable = false;
-             obj.title = 'Hopitale ' + pharmacy.name;
-             obj.www = `https://www.Hopitale-${pharmacy.name.slice(0,5)}.com/` ;
+             obj.title = 'Pharmacy ' + pharmacy.name;
+             obj.www = `https://www.Pharmacy-${pharmacy.name.slice(0,5)}.com/` ;
              return obj; 
             
           })
@@ -51,8 +50,21 @@ const route = Router();
  route.post('/search',  async (req, res, next) => {
     let input = {...req.body}
     console.log(input)
-     pharmacyServicesInstance.searchPharmacies(input.query)
-     .then(data => console.log(data, "search result pharmacies")) 
+     pharmacyServicesInstance.searchPharmacies(input.query.toString())
+     .then(data => {
+         var result = data.map((pharmacy)=>{
+         var obj = {};
+         obj.lat = pharmacy.latitude;
+         obj.lng = pharmacy.longitude;
+         obj.label = pharmacy.name[0].toUpperCase();
+         obj.draggable = false;
+         obj.title = 'Pharmacy ' + pharmacy.name;
+         obj.www = `https://www.Pharmacy-${pharmacy.name.slice(0,5)}.com/` ;
+         return obj; 
+        
+      })
+      res.json(result)
+     }) 
      .catch(err => console.log(err))
      return res.status(200); 
 });
