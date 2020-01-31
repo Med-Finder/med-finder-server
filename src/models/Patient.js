@@ -37,13 +37,11 @@ const Patient = new mongoose.Schema(
 
     medicalRecord: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "MedicalRecord",
-      required: true
+      ref: "MedicalRecord"
     },
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "MedicalRecord",
-      required: true
+      ref: "Doctor"
     } // should we have this
   },
   { timestamps: true }
