@@ -11,7 +11,7 @@ const route = Router();
   }));
   app.use(bodyParser.json());
   app.use('/patient', route);
-  route.get('/', (req, res)=> console.log('patient route working'))
+  route.get('/', (req, res)=> console.log(' \n patient route working'))
   const  patientServicesInstance = new PatientServices()
   
   route.post('/register',  async (req, res, next) => {

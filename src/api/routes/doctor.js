@@ -13,7 +13,7 @@ const route = Router();
   
   app.use('/doctor', route);
   
-  route.get('/', (req, res)=> console.log('doctor route working'))
+  route.get('/', (req, res)=> console.log('\n doctor route working'))
   
   const  doctorServicesInstance = new DoctorServices()
   

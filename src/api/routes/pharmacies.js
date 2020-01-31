@@ -21,7 +21,7 @@ const route = Router();
      const pharmacyInput = {...req.body}
         
         pharmacyServicesInstance.createPharmacy(pharmacyInput)
-        .then(data => console.log(data, "created pharmacy"))
+        .then(data => console.log(data, " \n created pharmacy"))
         .catch(err => console.log(err)) 
         return res.status(200);
   });
