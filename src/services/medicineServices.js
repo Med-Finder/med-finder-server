@@ -31,4 +31,14 @@ export default class MedicineServices {
             res.status(500).send(err);
           }
     }
+    async searchMedicine(query){
+        try{
+        var searchResult = await Medicine.search(query)
+        return searchResult;
+        }
+        catch(err){
+            console.log(err)
+            res.status(500).send(err);
+        }
+    }
 }

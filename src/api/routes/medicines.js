@@ -24,6 +24,14 @@ const route = Router();
         .catch(err => console.log( err,"lerrrrrrrrrrrrrrr")) 
         return res.status(200);
   });
+
+  route.post('/search',  async (req, res) => {
+    let input = {...req.body}
+    console.log(input)
+    MedicineServicesInstance.searchMedicine(input.query)
+     .then(data => res.json(data))
+     .catch(err => console.log(err,"dddd"))
+  })
 };
 
 

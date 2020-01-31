@@ -47,7 +47,7 @@ const route = Router();
        return res.status(200); 
  });
 
- route.post('/search',  async (req, res, next) => {
+ route.post('/search',  async (req, res) => {
     let input = {...req.body}
     console.log(input)
      pharmacyServicesInstance.searchPharmacies(input.query.toString())

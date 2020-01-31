@@ -34,5 +34,4 @@ export default class PharmacyServices {
     var searchResult = await Pharmacy.search(query)
     return searchResult;
     }
-   
 }
