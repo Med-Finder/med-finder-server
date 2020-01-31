@@ -34,7 +34,10 @@ const Doctor = new mongoose.Schema(
     
     closingHour: String, 
     
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    patients: [
+      { type: mongoose.Schema.Types.ObjectId,ref: "Patient"} // should we have this
+    ],
   },
   { timestamps: true }
 );

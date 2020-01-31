@@ -1,5 +1,5 @@
 import Patient from '../models/Patient'
-var patient = new Patient()
+
 export default class PatientServices {
     constructor(patient){
         patient = new Patient()
@@ -21,10 +21,10 @@ export default class PatientServices {
             let savedPatient = await newPatient.save(); //when fail its goes to catch
             console.log("patient created in database "); //when successsss it print.
             return savedPatient;
-          } catch (err) {
+          } 
+            catch (err) {
             console.log('err' + err);
             res.status(500).send(err);
           }
     }
-   
 }

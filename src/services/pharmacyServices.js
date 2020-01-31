@@ -1,5 +1,5 @@
 import Pharmacy from '../models/Pharmacy'
-var pharmacy = new Pharmacy()
+
 export default class PharmacyServices {
     constructor(pharmacy){
       pharmacy = new Pharmacy()
