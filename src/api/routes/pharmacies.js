@@ -50,7 +50,6 @@ const pharmacyRoute = app => {
 
   route.post("/search", async (req, res, next) => {
     let input = { ...req.body };
-    console.log("there you go", input);
     pharmacyServicesInstance
       .searchPharmacies(input.query.toString())
       .then(data => {
