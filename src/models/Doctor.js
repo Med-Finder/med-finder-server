@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
-import validator from "validator";
+const mongoose = require("mongoose");
+
+const validator = require("validator");
 
 const Doctor = new mongoose.Schema(
   {
@@ -27,16 +28,16 @@ const Doctor = new mongoose.Schema(
     image: String,
 
     latitude: String,
-    
-    longitude:String, 
 
-    openingHour: String, 
-    
-    closingHour: String, 
-    
+    longitude: String,
+
+    openingHour: String,
+
+    closingHour: String,
+
     password: { type: String, required: true }
   },
   { timestamps: true }
 );
 
-export default mongoose.model("Doctor", Doctor);
+module.export = mongoose.model("Doctor", Doctor);

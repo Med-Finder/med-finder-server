@@ -1,7 +1,7 @@
-import { Router } from "express";
+const { Router } = require("express");
 // import middlewares from "../middlewares";
-import bodyParser from "body-parser";
-import PharmacyServices from "../../services/pharmacyServices";
+const bodyParser = require("body-parser");
+const PharmacyServices = require("../../services/pharmacyServices");
 
 const route = Router();
 
@@ -70,4 +70,4 @@ const pharmacyRoute = app => {
   });
 };
 
-export default pharmacyRoute;
+module.exports = pharmacyRoute;

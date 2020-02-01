@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Pescription = new mongoose.Schema(
   {
@@ -24,4 +24,4 @@ const Pescription = new mongoose.Schema(
   { timestamps: true }
 );
 // should a pharmacy has it's own medicine table with all of the quantities
-export default mongoose.model("Pescription", Pescription);
+module.export = mongoose.model("Pescription", Pescription);
