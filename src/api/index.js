@@ -1,7 +1,8 @@
 import { Router } from "express";
-import pharmacyRoute from './routes/pharmacies'
+import pharmacyRoute from "./routes/pharmacies";
+
 export default () => {
-   const app = Router();
-   pharmacyRoute(app)
-    return app;
+  const app = Router();
+  pharmacyRoute(app);
+  return app;
 };
