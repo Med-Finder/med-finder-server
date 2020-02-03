@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import middlewares from '../middlewares';
-import bodyParser from 'body-parser';
-import PatientServices from '../../services/patientServices'
+
+
+const bodyParser = require ('body-parser')
+const PatientServices = require( '../../services/patientServices')
 
 const route = Router();
 
@@ -27,4 +27,4 @@ const route = Router();
 };
 
 
-export default patientRoute
+module.exports = patientRoute
