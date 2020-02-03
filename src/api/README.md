@@ -5,7 +5,7 @@ In the `index file` import your route in this way:
 ```
 import { Router } from "express";
 import example from "./routes/example";
-export default () => {
+module.export =  () => {
 const app = Router();
 example(app);
 return app;

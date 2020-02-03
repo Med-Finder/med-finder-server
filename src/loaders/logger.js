@@ -1,5 +1,5 @@
-import winston from "winston";
-import config from "../config";
+const winston = require("winston");
+const config = require("../config");
 
 const transports = [];
 if (process.env.NODE_ENV !== "development") {
@@ -29,4 +29,4 @@ const LoggerInstance = winston.createLogger({
   transports
 });
 
-export default LoggerInstance;
+module.exports = LoggerInstance;

@@ -1,16 +1,13 @@
-import config from "./config";
+const config = require("./config");
 
-import express from "express";
+const express = require("express");
 
-import Logger from "./loaders/logger";
-
-import("@babel/register");
-import("@babel/polyfill");
+const Logger = require("./loaders/logger");
 
 async function startServer() {
   const app = express();
-  await require("./loaders").default({ expressApp: app });
- 
+  await require("./loaders")({ expressApp: app });
+
   app.listen(config.port, err => {
     if (err) {
       Logger.error(err);
@@ -24,6 +21,5 @@ async function startServer() {
       `);
   });
 }
-
 
 startServer();
