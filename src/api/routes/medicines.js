@@ -28,7 +28,7 @@ const route = Router();
   route.post('/search',  async (req, res) => {
     let input = {...req.body}
     console.log(input)
-    MedicineServicesInstance.searchMedicine(input.query)
+      MedicineServicesInstance.searchMedicine(input.query)
      .then(data => res.json(data))
      .catch(err => console.log(err,"dddd"))
   })

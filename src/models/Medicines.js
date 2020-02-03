@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-const searchable = require('mongoose-regex-search');
+const mongoose = require("mongoose");
 
 const Medicine = new mongoose.Schema(
   {
@@ -22,5 +21,5 @@ const Medicine = new mongoose.Schema(
   },
   { timestamps: true }
 );
-Medicine.plugin(searchable);
-export default mongoose.model("Medicine", Medicine);
+
+module.export = mongoose.model("Medicine", Medicine);

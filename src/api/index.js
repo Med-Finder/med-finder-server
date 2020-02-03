@@ -1,13 +1,15 @@
-import { Router } from "express";
-import pharmacyRoute from './routes/pharmacies'
-import patientRoute from './routes/patients'
-import doctorRoute from './routes/doctor'
-import medicineRoute from './routes/medicines'
-export default () => {
-   const app = Router();
-   pharmacyRoute(app)
-   patientRoute(app)
-   doctorRoute(app)
-   medicineRoute(app)
-    return app;
+const express = require("express");
+const pharmacyRoute = require("./routes/pharmacies");
+const patientRoute = require('./routes/patients')
+const doctorRoute = require( './routes/doctor')
+const medicineRoute = require( './routes/medicines')
+// import authRoute from "./routes/authRoute";
+module.exports = () => {
+  const app = express.Router();
+  pharmacyRoute(app);
+  patientRoute(app)
+  doctorRoute(app)
+  medicineRoute(app)
+  // authRoute(app);
+  return app;
 };

@@ -1,18 +1,17 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import routes from "../api";
-import config from "../config";
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const routes = require("../api");
+const config = require("../config");
 
-export default ({ app }) => {
+module.exports = ({ app }) => {
   app.get("/status", (req, res) => {
     res.status(200).end();
   });
-  
+
   app.head("/status", (req, res) => {
     res.status(200).end();
   });
-  
+
   app.enable("trust proxy");
 
   app.use(cors());

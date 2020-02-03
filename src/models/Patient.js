@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import validator from "validator";
+const mongoose = require("mongoose");
+const validator = require("validator");
 
 const Patient = new mongoose.Schema(
   {
@@ -24,9 +24,9 @@ const Patient = new mongoose.Schema(
           throw new Error({ error: "Invalid Email adress" });
       }
     },
- 
-    password: { type: String, required: true }, 
-    
+
+    password: { type: String, required: true },
+
     adress: String, //should be revised
 
     image: String, //should be revised
@@ -48,4 +48,4 @@ const Patient = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Patient", Patient);
+module.export = mongoose.model("Patient", Patient);

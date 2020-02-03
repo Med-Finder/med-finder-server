@@ -6,11 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/index.js",
-    "server": "nodemon build/index.js",
-    "build": "babel src -d build -w",
-    "onlyServer": "concurrently --kill-others-on-fail \"npm run build\" \"npm run server\"",
+    "server": "nodemon src/index.js",
     "client": "npm run start --prefix ../med-finder-client",
-    "dev": "concurrently --kill-others-on-fail \"npm run onlyServer\"   \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -21,7 +19,6 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "http-proxy-middleware": "^0.20.0",
     "method-override": "^3.0.0",
     "mongoose": "^5.8.9",
     "mongoose-regex-search": "^0.8.14",
@@ -29,12 +26,6 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.3",
-    "@babel/core": "^7.8.3",
-    "@babel/polyfill": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
-    "@babel/preset-react": "^7.8.3",
-    "@babel/register": "^7.8.3",
     "concurrently": "^5.0.2",
     "nodemon": "^2.0.2"
   }
