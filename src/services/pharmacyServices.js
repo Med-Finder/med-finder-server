@@ -30,7 +30,17 @@ module.exports = class PharmacyServices {
     return found;
   }
   async searchPharmacies(query) {
-    var searchResult = await Pharmacy.search(query);
+    var searchResult = await Pharmacy.search(query).populate({path:'medicines'});
     return searchResult;
+  }
+  async addMedicines(query, med) {
+    var searchResult = await Pharmacy.search(query)
+    .then(data => {
+      console.log(data[0].medicines, 'helloooooo')
+      data[0].medicines.push(med)
+      data[0].save()
+      console.log(data)
+    })
+    .catch(err => console.log(err, 'error updating med'))
   }
 };
