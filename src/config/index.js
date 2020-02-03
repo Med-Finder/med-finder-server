@@ -10,7 +10,7 @@ if (!envFound) {
 module.exports = {
   port: parseInt(process.env.PORT, 10),
 
-  databaseURL: process.env.POSTGRES_URI,
+  databaseURL: process.env.MONGODB_URI,
 
   jwtSecret: process.env.JWT_SECRET,
 
