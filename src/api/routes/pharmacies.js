@@ -1,7 +1,7 @@
-import { Router } from "express";
+const { Router } = require("express");
 // import middlewares from "../middlewares";
-import bodyParser from "body-parser";
-import PharmacyServices from "../../services/pharmacyServices";
+const bodyParser = require("body-parser");
+const PharmacyServices = require("../../services/pharmacyServices");
 
 const route = Router();
 
@@ -50,7 +50,7 @@ const pharmacyRoute = app => {
 
   route.post("/search", async (req, res, next) => {
     let input = { ...req.body };
-    console.log("there you go", input);
+    console.log(input);
     pharmacyServicesInstance
       .searchPharmacies(input.query.toString())
       .then(data => {
@@ -71,4 +71,4 @@ const pharmacyRoute = app => {
   });
 };
 
-export default pharmacyRoute;
+module.exports = pharmacyRoute;

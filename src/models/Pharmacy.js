@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const searchable = require("mongoose-regex-search");
 const Pharmacy = new mongoose.Schema(
   {
@@ -20,4 +20,4 @@ const Pharmacy = new mongoose.Schema(
 );
 // should a pharmacy has it's own medicine table with all of the quantities
 Pharmacy.plugin(searchable);
-export default mongoose.model("Pharmacy", Pharmacy);
+module.exports = mongoose.model("Pharmacy", Pharmacy);

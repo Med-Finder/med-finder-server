@@ -7,7 +7,7 @@ Export all of the middleware files to the _index file_ like this
 ```
 import example from "./example";
 
-export default {
+module.export =  {
 example
 };
 ```

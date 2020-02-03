@@ -1,8 +1,10 @@
-import expressLoader from "./express.js";
-import mongooseLoader from "./mongoose";
-import Logger from "./logger";
+const expressLoader = require("./express.js");
 
-export default async ({ expressApp }) => {
+const mongooseLoader = require("./mongoose");
+
+const Logger = require("./logger");
+
+module.exports = async ({ expressApp }) => {
   const mongoConnection = await mongooseLoader();
   Logger.info("✌️ DB loaded and connected!");
 

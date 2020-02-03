@@ -1,6 +1,5 @@
-import Pharmacy from "../models/Pharmacy";
-// var pharmacy = new Pharmacy()
-export default class PharmacyServices {
+const Pharmacy = require("../models/Pharmacy");
+module.exports = class PharmacyServices {
   constructor(pharmacy) {
     pharmacy = new Pharmacy();
   }
@@ -34,4 +33,4 @@ export default class PharmacyServices {
     var searchResult = await Pharmacy.search(query);
     return searchResult;
   }
-}
+};
