@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Medicine = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, searchable: true, required: true },
     medicineClass: { type: String, required: true },
     cost: { type: String, required: true }, //should it be string or number
     administrationRoute: { type: String, required: true },
