@@ -64,10 +64,10 @@ const pharmacyRoute = app => {
           obj.www = `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`;
           return obj;
         });
-        res.json(result);
+        res.end(result);
       })
       .catch(err => console.log(err));
-    return res.status(200);
+    //return res.status(200);
   });
   
   route.post("/addMedicine", async (req, res, next) => {
@@ -76,22 +76,10 @@ const pharmacyRoute = app => {
     pharmacyServicesInstance
       .addMedicines(input.query, input.medicine)
       .then(data => { 
-        var result = data.map(pharmacy => {
-          var obj = {};
-          obj.lat = pharmacy.latitude;
-          obj.lng = pharmacy.longitude;
-          obj.label = pharmacy.name[0].toUpperCase();
-          obj.draggable = false;
-          obj.title = "Pharmacy " + pharmacy.name;
-          obj.www = `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`;
-          return obj;
-        });
-        res.json(result);
-      })
+      console.log("medicine added with success", data)
+        })
       .catch(err => console.log(err));
-    return res.status(200);
   });
-
 };
 
 module.exports = pharmacyRoute;

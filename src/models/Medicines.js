@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const searchable = require("mongoose-regex-search");
 
 const Medicine = new mongoose.Schema(
   {
@@ -19,7 +20,11 @@ const Medicine = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "Pharmacy", required: true } // should be tested
     ]
   },
+  {
+    toJson:{virtuals:true},
+    toObject :{virtuals:true} 
+  },
   { timestamps: true }
 );
-
-module.export = mongoose.model("Medicine", Medicine);
+Medicine.plugin(searchable);
+module.exports = mongoose.model("Medicine", Medicine);
