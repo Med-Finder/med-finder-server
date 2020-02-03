@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node build/index.js",
+    "start": "node src/index.js",
     "server": "nodemon src/index.js",
     "client": "npm run start --prefix ../med-finder-client",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
