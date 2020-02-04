@@ -16,7 +16,11 @@ const Pharmacy = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "Medicine", required: true } // should be tested
     ] //do we need this
   },
-  { timestamps: true }
+  { timestamps: true },
+  {
+    toJson:{virtuals:true},
+    toObject :{virtuals:true} 
+  }
 );
 // should a pharmacy has it's own medicine table with all of the quantities
 Pharmacy.plugin(searchable);

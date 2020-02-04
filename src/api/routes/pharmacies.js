@@ -31,18 +31,18 @@ const pharmacyRoute = app => {
     console.log("locate pharmacy route");
     pharmacyServicesInstance
       .locatePharmacies()
-      .then(data => {
-        var result = data.map(pharmacy => {
-          return {
-            lat: pharmacy.latitude,
-            lng: pharmacy.longitude,
-            label: pharmacy.name[0].toUpperCase(),
-            draggable: false,
-            title: "Pharmacy " + pharmacy.name,
-            www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
-          };
-        });
-        res.json(result);
+      .then(data => { res.json(data)
+        // var result = data.map(pharmacy => {
+        //   return {
+        //     lat: pharmacy.latitude,
+        //     lng: pharmacy.longitude,
+        //     label: pharmacy.name[0].toUpperCase(),
+        //     draggable: false,
+        //     title: "Pharmacy " + pharmacy.name,
+        //     www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
+        //   };
+        // });
+        // res.json(result);
       })
       .catch(err => console.log(err));
     return res.status(200);
@@ -53,7 +53,7 @@ const pharmacyRoute = app => {
     console.log(input);
     pharmacyServicesInstance
       .searchPharmacies(input.query.toString())
-      .then(data => {
+      .then(data => { res.json(data)
         var result = data.map(pharmacy => {
           var obj = {};
           obj.lat = pharmacy.latitude;
@@ -64,10 +64,21 @@ const pharmacyRoute = app => {
           obj.www = `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`;
           return obj;
         });
-        res.json(result);
+        res.end(result);
       })
       .catch(err => console.log(err));
-    return res.status(200);
+    //return res.status(200);
+  });
+  
+  route.post("/addMedicine", async (req, res, next) => {
+    let input = { ...req.body };
+    console.log(input);
+    pharmacyServicesInstance
+      .addMedicines(input.query, input.medicine)
+      .then(data => { 
+      console.log("medicine added with success", data)
+        })
+      .catch(err => console.log(err));
   });
 };
 

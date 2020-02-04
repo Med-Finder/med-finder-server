@@ -30,10 +30,23 @@ module.exports = class MedicineServices {
   async searchMedicine(query) {
     try {
       var searchResult = await Medicine.search(query);
-      return searchResult;
     } catch (err) {
       console.log(err);
       res.status(500).send(err);
     }
+  }
+  async getAllMedicines() {
+    var found = await Medicine.find({});
+    return found;
+  }
+  async addPharmacy(query, pharmacyId) {
+     await Medicine.search(query)
+    .then(data => {
+      console.log(data[0].pharmacyId, 'helloooooo from medicine')
+      data[0].pharmacyId.push(pharmacyId)
+      data[0].save()
+      console.log(data)
+    })
+    .catch(err => console.log(err, 'error updating med'))
   }
 };
