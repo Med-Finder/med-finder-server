@@ -1,29 +1,12 @@
-import config from "./config";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 
-import express from "express";
+ReactDOM.render(<App />, document.getElementById('root'));
 
-import Logger from "./loaders/logger";
-
-import("@babel/register");
-import("@babel/polyfill");
-
-async function startServer() {
-  const app = express();
-  await require("./loaders").default({ expressApp: app });
- 
-  app.listen(config.port, err => {
-    if (err) {
-      Logger.error(err);
-      //process.exit(1);
-      return;
-    }
-    Logger.info(`
-        ################################################
-        🛡️  Server listening on port: ${config.port} 🛡️ 
-        ################################################
-      `);
-  });
-}
-
-
-startServer();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
