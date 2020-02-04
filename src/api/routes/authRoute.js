@@ -9,14 +9,27 @@ const authRoute = app => {
 
   route.get("/", (req, res) => console.log("auth route working"));
 
-  route.post("/register", middlewares.validateRegisterInput, (req, res) => {
-    Logger.debug("all fields are verified, staring to work :100:");
-    const newPatient = new authService(req.body);
-    newPatient.register((err, patient) => {
-      if (err) {
-        return res.status(400).send(err);
+  route.post(
+    "/register",
+    middlewares.validator.validateRegisterInput,
+    (req, res) => {
+      Logger.debug("all fields are verified, staring to work ");
+      const newPatient = new authService(req.body);
+      newPatient.register((err, patient) => {
+        if (err) {
+          return res.status(400).send(err);
+        }
+        return res.status(200).send(patient);
+      });
+    }
+  );
+  route.post("/logIn", (req, res) => {
+    const Patient = new authService(req.body);
+    Patient.logIn((error, result) => {
+      if (error) {
+        return res.status(400).json(error);
       }
-      return res.status(200).send(patient);
+      return res.send(result);
     });
   });
 };

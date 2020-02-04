@@ -1,5 +1,5 @@
-const validateRegisterInput = require("./validate");
+const validator = require("./validator");
 
 module.exports = {
-  validateRegisterInput
+  validator
 };

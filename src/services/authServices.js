@@ -1,6 +1,8 @@
 const { PatientModel } = require("../models");
 const Logger = require("../loaders/logger");
 const bcrypt = require("bcryptjs");
+const { jwtSecret } = require("./../config");
+const jwt = require("jsonwebtoken");
 module.exports = class AuthServices {
   constructor({ firstName, lastName, email, password } = {}) {
     this.firstName = firstName;
@@ -18,12 +20,12 @@ module.exports = class AuthServices {
     //   return res.status(400).json(errors);
     // }
     // find user by email
-    Logger.debug("searching for a user with sama email");
+    Logger.debug("searching for a user with same email");
     PatientModel.findOne({ email: this.email })
       .then(patient => {
         if (patient) {
-          Logger.error("a user with the same email exists 🙅");
-          return { email: "Email already exists" };
+          Logger.error("a user with the same email exists 🔥");
+          callback({ error: "Email already exists 🔥 " }, null);
         } else {
           Logger.debug("creating salt 😄");
           bcrypt.genSalt(10, (err, salt) => {
@@ -33,6 +35,7 @@ module.exports = class AuthServices {
             }
             Logger.debug("hashing password 😄");
             bcrypt.hash(this.password, salt, (err, hash) => {
+              //consider making a hashing middleware
               if (err) {
                 Logger.error("err with hashing 🔥");
                 callback(err, null);
@@ -52,7 +55,7 @@ module.exports = class AuthServices {
                   callback(null, user);
                 })
                 .catch(err => {
-                  Logger.error("err with saving user 🔥");
+                  Logger.error("err with saving user :fire:");
                   callback(err, null);
                 });
             });
@@ -60,10 +63,62 @@ module.exports = class AuthServices {
         }
       })
       .catch(err => {
-        Logger.error("err with find one user 🔥");
+        Logger.error("err with find one user :fire:");
         callback(err, null);
       });
   }
 
-  logIn() {}
+  logIn(callback) {
+    // Find user by email
+    Logger.debug("searching for a patient 🔍");
+    PatientModel.findOne({ email: this.email })
+      .then(patient => {
+        if (!patient) {
+          Logger.error("no patiens with the same email 😖");
+          callback({ emailnotfound: "Email not found ⛔️" }, null);
+        }
+        bcrypt
+          .compare(this.password, patient.password)
+          .then(isMatch => {
+            if (isMatch) {
+              Logger.debug("the passwords are a match 💓");
+              Logger.debug("creating the token 🔑");
+              jwt.sign(
+                {
+                  id: patient.id,
+                  email: patient.email
+                },
+                jwtSecret,
+                {
+                  expiresIn: 31556926 // 1 year in seconds
+                },
+                (err, token) => {
+                  if (err) {
+                    Logger.error("err with the token eneration 💢");
+                    callback({ "err with the token eneration 💢": err }, null);
+                  }
+                  Logger.debug(
+                    "done creating the token sending back to the controller 🎮"
+                  );
+                  callback(null, {
+                    success: true,
+                    token: "Bearer " + token
+                  });
+                }
+              );
+            } else {
+              Logger.debug("the passwords are not a match 💔");
+              callback({ passwordincorrect: "Password incorrect 💢" }, null);
+            }
+          })
+          .catch(err => {
+            Logger.error("err with hashing 💢", err),
+              callback({ "err with hashing 💢": err }, null);
+          });
+      })
+      .catch(err => {
+        Logger.error("err with searching for a patient 💢", err);
+        callback({ "err with searching for a patient 💢": err }, null);
+      });
+  }
 };

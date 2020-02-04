@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const passport = require("passport");
 const routes = require("../api");
 const config = require("../config");
 
@@ -19,6 +20,10 @@ module.exports = ({ app }) => {
   app.use(require("method-override")());
 
   app.use(bodyParser.json());
+
+  app.use(passport.initialize());
+
+  require("./passport")(passport);
 
   app.use(config.api.prefix, routes());
 

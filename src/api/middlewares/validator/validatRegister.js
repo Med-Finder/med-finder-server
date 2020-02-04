@@ -7,27 +7,27 @@ module.exports = function validateRegisterInput(req, res, next) {
       Convert all empty fields to strings, before running
       the validation checks (Validator works only with strs)
       */
-  req.body.firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
-  req.body.lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
-  req.body.email = !isEmpty(req.body.email) ? req.body.email : "";
-  req.body.password = !isEmpty(req.body.password) ? req.body.password : "";
-  req.body.password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
+  const firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
+  const lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
+  const email = !isEmpty(req.body.email) ? req.body.email : "";
+  const password = !isEmpty(req.body.password) ? req.body.password : "";
+  const password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
 
   /*
       Checks for empty fields
       */
   //Name check
-  if (Validator.isEmpty(req.body.firstName)) {
+  if (Validator.isEmpty(firstName)) {
     errors.firstName = "firstName field is required";
   }
 
-  if (Validator.isEmpty(req.body.lastName)) {
+  if (Validator.isEmpty(lastName)) {
     errors.lastName = "lastName field is required";
   }
   // Email checks
-  if (Validator.isEmpty(req.body.email)) {
+  if (Validator.isEmpty(email)) {
     errors.email = "Email field is required";
-  } else if (!Validator.isEmail(req.body.email)) {
+  } else if (!Validator.isEmail(email)) {
     errors.email = "Email is invalid";
   }
 
@@ -35,21 +35,21 @@ module.exports = function validateRegisterInput(req, res, next) {
       Checks for empty fields
       */
   //Name check
-  if (Validator.isEmpty(req.body.password)) {
+  if (Validator.isEmpty(password)) {
     errors.password = "Password field is required";
   }
 
   //Password check
   //password empty
-  if (Validator.isEmpty(req.body.password2)) {
+  if (Validator.isEmpty(password2)) {
     errors.password2 = "Confirm password field is required";
   }
   //password length
-  if (!Validator.isLength(req.body.password, { min: 6, max: 30 })) {
+  if (!Validator.isLength(password, { min: 6, max: 30 })) {
     errors.password = "Password must be at least 6 characters";
   }
   // match password
-  if (!Validator.equals(req.body.password, req.body.password2)) {
+  if (!Validator.equals(password, password2)) {
     errors.password2 = "Passwords must match";
   }
   //return the error object with any/all errors
@@ -58,5 +58,6 @@ module.exports = function validateRegisterInput(req, res, next) {
   if (!isEmpty(errors)) {
     return res.status(400).send(errors);
   }
+  req.body = { firstName, lastName, email, password };
   next();
 };
