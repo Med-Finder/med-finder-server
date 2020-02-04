@@ -29,14 +29,14 @@ const Doctor = new mongoose.Schema(
 
     latitude: String,
 
-    openingHour: String, 
-    
-    closingHour: String, 
-    
+    openingHour: String,
+
+    closingHour: String,
+
     password: { type: String, required: true },
     patients: [
-      { type: mongoose.Schema.Types.ObjectId,ref: "Patient"} // should we have this
-    ],
+      { type: mongoose.Schema.Types.ObjectId, ref: "Patient" } // should we have this
+    ]
   },
   { timestamps: true }
 );
