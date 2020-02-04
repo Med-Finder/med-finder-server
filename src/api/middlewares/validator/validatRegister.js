@@ -31,9 +31,6 @@ module.exports = function validateRegisterInput(req, res, next) {
     errors.email = "Email is invalid";
   }
 
-  /*
-      Checks for empty fields
-      */
   //Name check
   if (Validator.isEmpty(password)) {
     errors.password = "Password field is required";

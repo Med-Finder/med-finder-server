@@ -1,4 +1,6 @@
 const validateRegisterInput = require("./validatRegister");
+const validateLogInInput = require("./validateLogin");
 module.exports = {
-  validateRegisterInput
+  validateRegisterInput,
+  validateLogInInput
 };

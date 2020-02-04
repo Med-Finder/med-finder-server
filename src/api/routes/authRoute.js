@@ -23,7 +23,7 @@ const authRoute = app => {
       });
     }
   );
-  route.post("/logIn", (req, res) => {
+  route.post("/logIn", middlewares.validator.validateLogInInput, (req, res) => {
     const Patient = new authService(req.body);
     Patient.logIn((error, result) => {
       if (error) {
