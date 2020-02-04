@@ -1,8 +1,10 @@
-const { PatientModel } = require("../models");
-const Logger = require("../loaders/logger");
-const bcrypt = require("bcryptjs");
-const { jwtSecret } = require("./../config");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
+const { PatientModel } = require("../models");
+const { jwtSecret } = require("./../config");
+const Logger = require("../loaders/logger");
+
 module.exports = class AuthServices {
   constructor({ firstName, lastName, email, password } = {}) {
     this.firstName = firstName;

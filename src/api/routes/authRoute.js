@@ -24,6 +24,7 @@ const authRoute = app => {
     }
   );
   route.post("/logIn", middlewares.validator.validateLogInInput, (req, res) => {
+    Logger.debug("all fields are verified, staring to work ");
     const Patient = new authService(req.body);
     Patient.logIn((error, result) => {
       if (error) {
