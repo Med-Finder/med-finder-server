@@ -35,17 +35,20 @@ const Patient = new mongoose.Schema(
 
     gender: String, //we can add a validator here
 
-    medicalRecord: [{
-      type: mongoose.Schema.Types.ObjectId,ref: "MedicalRecord"}
+    medicalRecord: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MedicalRecord"
+      }
     ],
     doctors: [
-      { type: mongoose.Schema.Types.ObjectId,ref: "Doctor"} // should we have this
+      { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" } // should we have this
     ],
-  medicines: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Medicine" } // should be tested
-  ]
-}, 
+    medicines: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Medicine" } // should be tested
+    ]
+  },
   { timestamps: true }
 );
 
-module.export = mongoose.model("Patient", Patient);
+module.exports = mongoose.model("Patient", Patient);
