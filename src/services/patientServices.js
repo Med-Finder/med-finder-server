@@ -1,9 +1,8 @@
-const Patient = require("../models/Patient");
-
+const { PatientModel } = require("../models");
 module.exports = class PatientServices {
   async createPatient(patient) {
     try {
-      const newPatient = new Patient({
+      const newPatient = new PatientModel({
         firstName: patient.firstName,
         lastName: patient.lastName,
         phoneNumber: patient.phoneNumber,
