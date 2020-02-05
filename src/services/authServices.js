@@ -67,15 +67,6 @@ module.exports = class AuthServices {
                 callback(err, null);
               }
               Logger.debug("making new user 😄");
-              console.log({
-                firstName: this.firstName,
-                lastName: this.lastName,
-                email: this.email,
-                adress: this.adress,
-                phoneNumber: this.phoneNumber,
-                speciality: this.speciality,
-                password: hash
-              });
               const newUser = new this.Model({
                 firstName: this.firstName,
                 lastName: this.lastName,

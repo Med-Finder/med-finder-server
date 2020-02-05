@@ -2,7 +2,6 @@ const isEmpty = require("is-empty");
 const Validator = require("validator");
 module.exports = function validateRegisterInputPharmacy(req, res, next) {
   //Instantiate our errors object
-  console.log("verfiy pahrmacy");
   let errors = {};
   /*
       Convert all empty fields to strings, before running

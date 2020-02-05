@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const middlewares = require("../middlewares");
+const { validator } = require("../middlewares");
 const authService = require("../../services/authServices");
 const Logger = require("../../loaders/logger");
 const route = Router();
@@ -11,11 +11,10 @@ const authRoute = app => {
 
   route.post(
     "/register",
-    middlewares.validator.validateHeadersType,
-    middlewares.validator.validateInput,
+    validator.validateHeadersType,
+    validator.validateInput,
     (req, res) => {
       Logger.debug("all fields are verified, staring to work ");
-      console.log(req.body);
       const newUser = new authService(req.body, req.headers.headerstype);
       newUser.register((err, patient) => {
         if (err) {
@@ -28,8 +27,8 @@ const authRoute = app => {
 
   route.post(
     "/logIn",
-    // middlewares.validator.validateHeadersType,
-    // middlewares.validator.validateLogInInput,
+    validator.validateHeadersType,
+    validator.validateLogInInput,
     (req, res) => {
       Logger.debug("all fields are verified, staring to work ");
       const Patient = new authService(req.body);
