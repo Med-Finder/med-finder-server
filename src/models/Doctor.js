@@ -4,11 +4,11 @@ const validator = require("validator");
 
 const Doctor = new mongoose.Schema(
   {
-    firstname: {
+    firstName: {
       type: String,
       required: [true, "Please enter a first name"]
     },
-    lastname: {
+    lastName: {
       type: String,
       required: [true, "Please enter a last name"]
     },
@@ -32,9 +32,9 @@ const Doctor = new mongoose.Schema(
     image: String,
 
     lat: Number,
-    
-    lng :Number,
-    
+
+    lng: Number,
+
     openingHour: String,
 
     closingHour: String,

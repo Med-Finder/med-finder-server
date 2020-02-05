@@ -11,11 +11,13 @@ const authRoute = app => {
 
   route.post(
     "/register",
-    middlewares.validator.validateRegisterInput,
+    middlewares.validator.validateHeadersType,
+    middlewares.validator.validateInput,
     (req, res) => {
       Logger.debug("all fields are verified, staring to work ");
-      const newPatient = new authService(req.body);
-      newPatient.register((err, patient) => {
+      console.log(req.body);
+      const newUser = new authService(req.body, req.headers.headerstype);
+      newUser.register((err, patient) => {
         if (err) {
           return res.status(400).send(err);
         }
@@ -23,16 +25,22 @@ const authRoute = app => {
       });
     }
   );
-  route.post("/logIn", middlewares.validator.validateLogInInput, (req, res) => {
-    Logger.debug("all fields are verified, staring to work ");
-    const Patient = new authService(req.body);
-    Patient.logIn((error, result) => {
-      if (error) {
-        return res.status(400).json(error);
-      }
-      return res.send(result);
-    });
-  });
+
+  route.post(
+    "/logIn",
+    // middlewares.validator.validateHeadersType,
+    // middlewares.validator.validateLogInInput,
+    (req, res) => {
+      Logger.debug("all fields are verified, staring to work ");
+      const Patient = new authService(req.body);
+      Patient.logIn((error, result) => {
+        if (error) {
+          return res.status(400).json(error);
+        }
+        return res.send(result);
+      });
+    }
+  );
 };
 
 module.exports = authRoute;

@@ -1,21 +1,23 @@
 const isEmpty = require("is-empty");
 const Validator = require("validator");
-module.exports = function validateRegisterInput(req, res, next) {
+module.exports = function validateRegisterInputDoctor(req, res, next) {
   //Instantiate our errors object
+  console.log("verfiy doctor");
   let errors = {};
   /*
       Convert all empty fields to strings, before running
       the validation checks (Validator works only with strs)
-      */
+  */
   const firstName = !isEmpty(req.body.firstName) ? req.body.firstName : "";
   const lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
+  const speciality = !isEmpty(req.body.speciality) ? req.body.speciality : "";
   const email = !isEmpty(req.body.email) ? req.body.email : "";
   const password = !isEmpty(req.body.password) ? req.body.password : "";
   const password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
 
   /*
       Checks for empty fields
-      */
+  */
   //Name check
   if (Validator.isEmpty(firstName)) {
     errors.firstName = "firstName field is required";
@@ -24,6 +26,10 @@ module.exports = function validateRegisterInput(req, res, next) {
   if (Validator.isEmpty(lastName)) {
     errors.lastName = "lastName field is required";
   }
+
+  if (Validator.isEmpty(speciality)) {
+    errors.speciality = "speciality field is required";
+  }
   // Email checks
   if (Validator.isEmpty(email)) {
     errors.email = "Email field is required";
@@ -31,12 +37,11 @@ module.exports = function validateRegisterInput(req, res, next) {
     errors.email = "Email is invalid";
   }
 
-  //Name check
+  //Password check
   if (Validator.isEmpty(password)) {
     errors.password = "Password field is required";
   }
 
-  //Password check
   //password empty
   if (Validator.isEmpty(password2)) {
     errors.password2 = "Confirm password field is required";
@@ -55,6 +60,6 @@ module.exports = function validateRegisterInput(req, res, next) {
   if (!isEmpty(errors)) {
     return res.status(400).send(errors);
   }
-  req.body = { firstName, lastName, email, password };
+  req.body = { firstName, lastName, speciality, email, password };
   next();
 };

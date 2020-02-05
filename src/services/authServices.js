@@ -1,32 +1,56 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const { PatientModel } = require("../models");
+const { PatientModel, DoctorModel, PharmacyModel } = require("../models");
 const { jwtSecret } = require("./../config");
 const Logger = require("../loaders/logger");
 
 module.exports = class AuthServices {
-  constructor({ firstName, lastName, email, password } = {}) {
+  constructor(
+    {
+      firstName,
+      lastName,
+      name,
+      email,
+      password,
+      adress,
+      phoneNumber,
+      speciality
+    } = {},
+    header
+  ) {
+    this.header = header;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.name = name;
     this.email = email;
     this.password = password;
+    this.adress = adress;
+    this.phoneNumber = phoneNumber;
+    this.speciality = speciality;
+  }
+
+  findModel() {
+    switch (this.header) {
+      case "patient":
+        this.Model = PatientModel;
+        break;
+      case "pharmacy":
+        this.Model = PharmacyModel;
+        break;
+      case "doctor":
+        this.Model = DoctorModel;
+        break;
+    }
   }
 
   register(callback) {
-    // // Form validation
-    // //deconstruct errors from validateRegisterInput
-    // const { errors, isValid } = validateRegisterInput(req.body); take this part to a middle ware
-    // // Check validation
-    // if (!isValid) {
-    //   return res.status(400).json(errors);
-    // }
-    // find user by email
+    this.findModel();
     Logger.debug("searching for a user with same email");
-    PatientModel.findOne({ email: this.email })
-      .then(patient => {
-        if (patient) {
-          Logger.error("a user with the same email exists 🔥");
+    this.Model.findOne({ email: this.email })
+      .then(user => {
+        if (user) {
+          Logger.error(`a ${this.header} with the same email exists 🔥`);
           callback({ error: "Email already exists 🔥 " }, null);
         } else {
           Logger.debug("creating salt 😄");
@@ -43,14 +67,27 @@ module.exports = class AuthServices {
                 callback(err, null);
               }
               Logger.debug("making new user 😄");
-              const newPatient = new PatientModel({
+              console.log({
                 firstName: this.firstName,
                 lastName: this.lastName,
                 email: this.email,
+                adress: this.adress,
+                phoneNumber: this.phoneNumber,
+                speciality: this.speciality,
+                password: hash
+              });
+              const newUser = new this.Model({
+                firstName: this.firstName,
+                lastName: this.lastName,
+                name: this.name,
+                email: this.email,
+                adress: this.adress,
+                phoneNumber: this.phoneNumber,
+                speciality: this.speciality,
                 password: hash
               });
               Logger.debug("saving 😴");
-              newPatient
+              newUser
                 .save()
                 .then(user => {
                   Logger.debug("done 😴");

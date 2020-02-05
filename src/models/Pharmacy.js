@@ -8,7 +8,7 @@ const Pharmacy = new mongoose.Schema(
     latitude: Number,
     longitude: Number,
     openingHour: String,
-    closingHour: String, //should be revised : stsructure wise
+    closingHour: String, //should be revised : structure wise
     feedbacks: String,
     email: String,
     password: String,
@@ -18,10 +18,10 @@ const Pharmacy = new mongoose.Schema(
   },
   { timestamps: true },
   {
-    toJson:{virtuals:true},
-    toObject :{virtuals:true} 
+    toJson: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
-// should a pharmacy has it's own medicine table with all of the quantities
+// should a pharmacy has it's own medicine table with all of the quantities ?
 Pharmacy.plugin(searchable);
 module.exports = mongoose.model("Pharmacy", Pharmacy);
