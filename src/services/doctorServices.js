@@ -5,12 +5,13 @@ module.exports  = class DoctorServices {
   async createDoctor(doctor) {
     try {
       const newDoctor = new DoctorModel({
-        name: doctor.name,
+        firstname: doctor.firstname,
+        lastname: doctor.lastname,
         speciality: doctor.speciality,
         email: doctor.email,
         image: doctor.image,
-        latitude: doctor.latitude,
-        longitude: doctor.longitude,
+        lat: doctor.lat,
+        lng: doctor.lng,
         openingHour: doctor.openingHour,
         closingHour: doctor.closingHour,
         password: doctor.password

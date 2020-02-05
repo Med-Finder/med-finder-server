@@ -25,17 +25,17 @@ const pharmacyRoute = app => {
     pharmacyServicesInstance
       .locatePharmacies()
       .then(data => { res.json(data)
-        // var result = data.map(pharmacy => {
-        //   return {
-        //     lat: pharmacy.latitude,
-        //     lng: pharmacy.longitude,
-        //     label: pharmacy.name[0].toUpperCase(),
-        //     draggable: false,
-        //     title: "Pharmacy " + pharmacy.name,
-        //     www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
-        //   };
-        // });
-        // res.json(result);
+        var result = data.map(pharmacy => {
+          return {
+            lat: pharmacy.lat,
+            lng: pharmacy.lng,
+            label: pharmacy.name[0].toUpperCase(),
+            draggable: false,
+            title: "Pharmacy " + pharmacy.name,
+            www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
+          };
+        });
+        res.json(result);
       })
       .catch(err => console.log(err));
     return res.status(200);
@@ -49,8 +49,8 @@ const pharmacyRoute = app => {
       .then(data => { res.json(data)
         var result = data.map(pharmacy => {
           var obj = {};
-          obj.lat = pharmacy.latitude;
-          obj.lng = pharmacy.longitude;
+          obj.lat = pharmacy.lat;
+          obj.lng = pharmacy.lng;
           obj.label = pharmacy.name[0].toUpperCase();
           obj.draggable = false;
           obj.title = "Pharmacy " + pharmacy.name;
