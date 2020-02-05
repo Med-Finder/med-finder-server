@@ -1,8 +1,6 @@
 const Pharmacy = require("../models/Pharmacy");
 module.exports = class PharmacyServices {
-  constructor(pharmacy) {
-    pharmacy = new Pharmacy();
-  }
+  
   async createPharmacy(pharmacy) {
     try {
       const newPharmacy = new Pharmacy({

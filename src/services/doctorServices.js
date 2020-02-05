@@ -1,9 +1,10 @@
-const Doctor = require("../models/Doctor");
+const {DoctorModel} = require("../models");
 
-module.exports = class DoctorServices {
+module.exports  = class DoctorServices {
+  
   async createDoctor(doctor) {
     try {
-      const newDoctor = new Doctor({
+      const newDoctor = new DoctorModel({
         name: doctor.name,
         speciality: doctor.speciality,
         email: doctor.email,
@@ -20,7 +21,8 @@ module.exports = class DoctorServices {
       return savedDoctor;
     } catch (err) {
       console.log("err" + err);
-      res.status(500).send(err);
     }
   }
 };
+
+

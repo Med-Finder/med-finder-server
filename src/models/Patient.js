@@ -48,4 +48,4 @@ const Patient = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.export = mongoose.model("Patient", Patient);
+module.exports = mongoose.model("Patient", Patient);

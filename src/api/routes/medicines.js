@@ -33,10 +33,18 @@ const medicineRoute = app => {
       .then(data => res.json(data))
       .catch(err => console.log(err, "dddd"));
   });
+
+  route.post("/searchForPharmacyLocation", async (req, res) => {
+    let input = { ...req.body };
+    console.log(input);
+    MedicineServicesInstance.getMedsLocations(input.query)
+      .then(data => res.json(data))
+      .catch(err => console.log(err));
+  });
+
   route.get("/getAllMedicines", (req, res) => {
     MedicineServicesInstance.getAllMedicines()
-    .then(data => res.json(data))
-    .catch(err => console.log(err, "dddd"));
+    
     return res.status(200);
   });
 

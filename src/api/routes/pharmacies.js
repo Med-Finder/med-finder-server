@@ -1,17 +1,10 @@
 const { Router } = require("express");
 // import middlewares from "../middlewares";
-const bodyParser = require("body-parser");
 const PharmacyServices = require("../../services/pharmacyServices");
 
 const route = Router();
 
 const pharmacyRoute = app => {
-  app.use(
-    bodyParser.urlencoded({
-      extended: true
-    })
-  );
-  app.use(bodyParser.json());
   app.use("/pharmacy", route);
   route.get("/", (req, res) => console.log("pharmacy route working"));
   const pharmacyServicesInstance = new PharmacyServices();

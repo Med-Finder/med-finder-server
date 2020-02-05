@@ -1,5 +1,5 @@
 const Medicine = require("../models/Medicines");
-
+const Pharmacy = require("../models/Pharmacy")
 module.exports = class MedicineServices {
   async createMedicine(medicine) {
     try {
@@ -29,7 +29,8 @@ module.exports = class MedicineServices {
   }
   async searchMedicine(query) {
     try {
-      var searchResult = await Medicine.search(query);
+      var searchResult = await Medicine.search(query).populate({path:'pharmacyId'});
+      return searchResult;
     } catch (err) {
       console.log(err);
       res.status(500).send(err);
@@ -49,4 +50,14 @@ module.exports = class MedicineServices {
     })
     .catch(err => console.log(err, 'error updating med'))
   }
-};
+  async getMedsLocations() {
+     await Medicine.find({}).populate({path:'pharmacyId'})
+    .then(data => {
+      var arr = data.map((med)=>{
+        if( med.pharmacyId.length !== 0) return med
+      })
+      console.log(arr, "arrrrrrrrrr")
+    })
+     .catch(err => console.log(err)) 
+  }
+}

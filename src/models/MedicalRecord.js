@@ -5,7 +5,8 @@ const MedicalRecord = new mongoose.Schema(
     patient: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient",
-      required: true
+      required: true,
+      unique:true 
     },
 
     problems: String, //should be revised : structure wise
@@ -16,4 +17,4 @@ const MedicalRecord = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.export = mongoose.model("MedicalRecord", MedicalRecord);
+module.exports = mongoose.model("MedicalRecord", MedicalRecord);
