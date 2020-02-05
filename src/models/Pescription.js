@@ -24,4 +24,4 @@ const Pescription = new mongoose.Schema(
   { timestamps: true }
 );
 // should a pharmacy has it's own medicine table with all of the quantities
-module.export = mongoose.model("Pescription", Pescription);
+module.exports = mongoose.model("Pescription", Pescription);
