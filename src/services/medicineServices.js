@@ -50,14 +50,8 @@ module.exports = class MedicineServices {
     })
     .catch(err => console.log(err, 'error updating med'))
   }
-  async getMedsLocations() {
-     await Medicine.find({}).populate({path:'pharmacyId'})
-    .then(data => {
-      var arr = data.map((med)=>{
-        if( med.pharmacyId.length !== 0) return med
-      })
-      console.log(arr, "arrrrrrrrrr")
-    })
-     .catch(err => console.log(err)) 
+  async getMedsLocations(query) {
+     const result = await Medicine.search(query).populate({path:'pharmacyId'})
+      return result;
   }
 }
