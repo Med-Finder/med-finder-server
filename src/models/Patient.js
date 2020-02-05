@@ -21,13 +21,13 @@ const Patient = new mongoose.Schema(
       unique: true,
       validate: value => {
         if (!validator.isEmail(value))
-          throw new Error({ error: "Invalid Email adress" });
+          throw new Error({ error: "Invalid Email address" });
       }
     },
 
     password: { type: String, required: true },
 
-    adress: String, //should be revised
+    address: String, //should be revised
 
     image: String, //should be revised
 

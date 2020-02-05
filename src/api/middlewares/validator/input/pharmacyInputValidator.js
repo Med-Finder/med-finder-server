@@ -8,7 +8,7 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
       the validation checks (Validator works only with strs)
   */
   const name = !isEmpty(req.body.name) ? req.body.name : "";
-  const adress = !isEmpty(req.body.adress) ? req.body.adress : "";
+  const address = !isEmpty(req.body.address) ? req.body.address : "";
   const phoneNumber = !isEmpty(req.body.phoneNumber)
     ? req.body.phoneNumber
     : "";
@@ -24,8 +24,8 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
     errors.name = "name field is required";
   }
 
-  if (Validator.isEmpty(adress)) {
-    errors.adress = "adress field is required";
+  if (Validator.isEmpty(address)) {
+    errors.address = "address field is required";
   }
 
   if (Validator.isEmpty(phoneNumber)) {
@@ -61,6 +61,6 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
   if (!isEmpty(errors)) {
     return res.status(400).send(errors);
   }
-  req.body = { name, adress, phoneNumber, email, password };
+  req.body = { name, address, phoneNumber, email, password };
   next();
 };

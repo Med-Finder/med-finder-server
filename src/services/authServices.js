@@ -13,7 +13,7 @@ module.exports = class AuthServices {
       name,
       email,
       password,
-      adress,
+      address,
       phoneNumber,
       speciality
     } = {},
@@ -25,7 +25,7 @@ module.exports = class AuthServices {
     this.name = name;
     this.email = email;
     this.password = password;
-    this.adress = adress;
+    this.address = address;
     this.phoneNumber = phoneNumber;
     this.speciality = speciality;
   }
@@ -72,7 +72,7 @@ module.exports = class AuthServices {
                 lastName: this.lastName,
                 name: this.name,
                 email: this.email,
-                adress: this.adress,
+                address: this.address,
                 phoneNumber: this.phoneNumber,
                 speciality: this.speciality,
                 password: hash

@@ -25,7 +25,7 @@ const Doctor = new mongoose.Schema(
       unique: true,
       validate: value => {
         if (!validator.isEmail(value))
-          throw new Error({ error: "Invalid Email adress" });
+          throw new Error({ error: "Invalid Email address" });
       }
     },
 

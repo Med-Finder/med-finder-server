@@ -3,7 +3,7 @@ const searchable = require("mongoose-regex-search");
 const Pharmacy = new mongoose.Schema(
   {
     name: { type: String, searchable: true },
-    adress: { type: String, searchable: false },
+    address: { type: String, searchable: false },
     phoneNumber: String, //should be revised : structure wise
     latitude: Number,
     longitude: Number,
