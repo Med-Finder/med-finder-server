@@ -9,7 +9,7 @@ make to read the GUIDELINES and the RULES files b4 coding
 use const and let avoid var as much as possible :100:
 
 avoid == as much as possible 🤚
-if you absolutely have to, inform the scrum master
+if you have to, inform the scrum master
 
 we're using babel so don't bother your self with ES5 syntax
 
@@ -26,7 +26,7 @@ b4 sending a pull request your comment on it should be in this form :
 
 \* if you have changed a file without mentioning it in the comment the pull is likely to be refused
 
-and last but not LEAST 🙅 no unused dependecies/variables just delete them also if you'll no longer use a dependency you downloaded inform the scrum master in your pull request comment
+and last but not LEAST 🙅 no unused dependencies/variables just delete them also if you'll no longer use a dependency you downloaded inform the scrum master in your pull request comment
 
 have fun hacking !!!
 

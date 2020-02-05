@@ -1,10 +1,10 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import routes from "../api";
-import config from "../config";
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const passport = require("passport");
+const routes = require("../api");
+const config = require("../config");
 
-export default ({ app }) => {
+module.exports = ({ app }) => {
   app.get("/status", (req, res) => {
     res.status(200).end();
   });
@@ -20,6 +20,10 @@ export default ({ app }) => {
   app.use(require("method-override")());
 
   app.use(bodyParser.json());
+
+  app.use(passport.initialize());
+
+  require("./passport")(passport);
 
   app.use(config.api.prefix, routes());
 

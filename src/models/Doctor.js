@@ -1,15 +1,44 @@
-const doctorSchema = `CREATE TABLE IF NOT EXISTS doctor (
-    doctorID SERIAL PRIMARY KEY UNIQUE NOT NULL,
-    name VARCHAR(255)  ,
-    speciality VARCHAR(255)  ,
-    geoLocation VARCHAR(255)   ,
-    adress VARCHAR(255)  ,
-    email VARCHAR(255)   ,
-    patient-id REFERENCES patient-doctor(patientID),
-    openingHours VARCHAR(255),
-    expiringDay DATE ,
-    image VARCHAR(255) ,
-    );`;
+const mongoose = require("mongoose");
 
- 
-    
+const validator = require("validator");
+
+const Doctor = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please enter a full name"]
+    },
+
+    speciality: {
+      // are we going to have a speciality table ?
+      type: String,
+      required: [true, "Please enter a valid speciality"]
+    },
+
+    email: {
+      type: String,
+      lowercase: true,
+      unique: true,
+      validate: value => {
+        if (!validator.isEmail(value))
+          throw new Error({ error: "Invalid Email adress" });
+      }
+    },
+
+    image: String,
+
+    latitude: String,
+
+    openingHour: String,
+
+    closingHour: String,
+
+    password: { type: String, required: true },
+    patients: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Patient" } // should we have this
+    ]
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Doctor", Doctor);

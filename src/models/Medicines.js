@@ -1,17 +1,30 @@
-const medicineSchema = `CREATE TABLE IF NOT EXISTS medicine (
-    medicineID SERIAL PRIMARY KEY UNIQUE NOT NULL,
-    name VARCHAR(255)  ,
-    medicineClass VARCHAR(255)  ,
-    cost VARCHAR(255)   ,
-    administrationRoute VARCHAR(255)  ,
-    dosageForm VARCHAR(255)   ,
-    dosageschedule VARCHAR(255) ,
-    medicineUnit VARCHAR(255) ,
-    expiringDay DATE ,
-    prescriptionStatus VARCHAR(255) ,
-    code  VARCHAR(255),
-    warning  VARCHAR(255),
-    sameAs  VARCHAR(255),
-    quantity  VARCHAR(255),
-    pharmacy-id REFERENCES pharmacyMedicine(pharmacyID),
-    );`;
+const mongoose = require("mongoose");
+const searchable = require("mongoose-regex-search");
+
+const Medicine = new mongoose.Schema(
+  {
+    name: { type: String, searchable: true, required: true },
+    medicineClass: { type: String, required: true },
+    cost: { type: String, required: true }, //should it be string or number
+    administrationRoute: { type: String, required: true },
+    dosageForm: { type: String, required: true },
+    dosageschedule: { type: String, required: true },
+    medicineUnit: { type: String, required: true },
+    expiringDay: { type: Date, required: true },
+    prescriptionStatus: { type: String, required: true }, //should it be boolean  ?
+    code: { type: String, required: true },
+    warning: { type: String, required: true },
+    sameAs: { type: String, required: true }, //should be id ?
+    quantity: { type: String, required: true },
+    pharmacyId: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Pharmacy", required: true } // should be tested
+    ]
+  },
+  {
+    toJson:{virtuals:true},
+    toObject :{virtuals:true} 
+  },
+  { timestamps: true }
+);
+Medicine.plugin(searchable);
+module.exports = mongoose.model("Medicine", Medicine);

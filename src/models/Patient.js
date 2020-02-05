@@ -1,35 +1,54 @@
-const patientSchema = `CREATE TABLE IF NOT EXISTS patient (
-    patientID SERIAL PRIMARY KEY UNIQUE NOT NULL,
-    firsName VARCHAR(255)  ,
-    lastName VARCHAR(255)  ,
-    password VARCHAR(255)   ,
-    phoneNumber VARCHAR(255) ,
-    email VARCHAR(255)   ,
-    adress VARCHAR(255)  ,
-    birthDate DATE   ,
-    gender VARCHAR(255) ,
-    geoLocation VARCHAR(255) ,
-    image  VARCHAR(255),
-    medicalRecordID REFERENCES medicalRecord(medicalRecordID)
-    doctor-id REFERENCES patientDactor(doctorID),
-    );`;
+const mongoose = require("mongoose");
+const validator = require("validator");
 
-// conn.query(userSchema, (err, data) => {
-//   if (err) console.error(err);
-//   else console.log("Created User Table");
-// });
+const Patient = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, "Please enter a valid first name"]
+    },
 
-//User functionality
+    lastName: {
+      type: String,
+      required: [true, "Please enter a valid last name"]
+    },
 
-// function getUser(username) {
-//   return conn.query(`SELECT * FROM users WHERE username = $1`, [username]);
-// }
+    phoneNumber: String, // should it be required ?
 
-// function createUser(username, password) {
-//   return conn.query(`INSERT into users(username, password) VALUES($1, $2)`, [
-//     username,
-//     password
-//   ]);
-// }
+    email: {
+      type: String,
+      lowercase: true,
+      unique: true,
+      validate: value => {
+        if (!validator.isEmail(value))
+          throw new Error({ error: "Invalid Email adress" });
+      }
+    },
 
-// module.exports.find = getUser;
+    password: { type: String, required: true },
+
+    adress: String, //should be revised
+
+    image: String, //should be revised
+
+    birthDate: String,
+
+    gender: String, //we can add a validator here
+
+    medicalRecord: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MedicalRecord"
+      }
+    ],
+    doctors: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" } // should we have this
+    ],
+    medicines: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Medicine" } // should be tested
+    ]
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Patient", Patient);

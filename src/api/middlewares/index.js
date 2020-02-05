@@ -1,1 +1,5 @@
-export default {};
+const validator = require("./validator");
+
+module.exports = {
+  validator
+};

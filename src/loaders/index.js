@@ -1,22 +1,15 @@
-import expressLoader from "./express.js";
-import Logger from "./logger";
-import db from './postgres'
+const expressLoader = require("./express.js");
 
+const mongooseLoader = require("./mongoose");
 
-export default async ({ expressApp }) => {
- 
-  db.connect()
-  .then(() => console.log(' database connected'))
-  .catch(err => console.error('connection error', err.stack))
-  
+const Logger = require("./logger");
 
- // Logger.info("✌️ DB loaded and connected!");
+module.exports = async ({ expressApp }) => {
+  const mongoConnection = await mongooseLoader();
+  Logger.info("✌️ DB loaded and connected!");
 
-  //   const userModel = {
-  //     name: 'userModel',
-  //     // Notice the require syntax and the '.default'
-  //     model: require('../models/user').default,
-  //   };
+  const models = require("./../models");
+  Logger.info("✌️ all model are loaded!");
 
   await expressLoader({ app: expressApp });
   Logger.info("✌️ Express loaded");
