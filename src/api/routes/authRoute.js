@@ -31,8 +31,8 @@ const authRoute = app => {
     validator.validateLogInInput,
     (req, res) => {
       Logger.debug("all fields are verified, staring to work ");
-      const Patient = new authService(req.body);
-      Patient.logIn((error, result) => {
+      const User = new authService(req.body, req.headers.headerstype);
+      User.logIn((error, result) => {
         if (error) {
           return res.status(400).json(error);
         }

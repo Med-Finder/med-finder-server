@@ -51,20 +51,20 @@ module.exports = class AuthServices {
       .then(user => {
         if (user) {
           Logger.error(`a ${this.header} with the same email exists 🔥`);
-          callback({ error: "Email already exists 🔥 " }, null);
+          return callback({ error: "Email already exists 🔥 " }, null);
         } else {
           Logger.debug("creating salt 😄");
           bcrypt.genSalt(10, (err, salt) => {
             if (err) {
               Logger.error("err with making salt 🔥");
-              callback(err, null);
+              return callback(err, null);
             }
             Logger.debug("hashing password 😄");
             bcrypt.hash(this.password, salt, (err, hash) => {
               //consider making a hashing middleware
               if (err) {
                 Logger.error("err with hashing 🔥");
-                callback(err, null);
+                return callback(err, null);
               }
               Logger.debug("making new user 😄");
               const newUser = new this.Model({
@@ -81,42 +81,41 @@ module.exports = class AuthServices {
               newUser
                 .save()
                 .then(user => {
-                  Logger.debug("done 😴");
-                  callback(null, user);
+                  Logger.debug("done 😴"), callback(null, user);
                 })
                 .catch(err => {
-                  Logger.error("err with saving user :fire:");
-                  callback(err, null);
+                  Logger.error("err with saving user :fire:"),
+                    callback(err, null);
                 });
             });
           });
         }
       })
       .catch(err => {
-        Logger.error("err with find one user :fire:");
-        callback(err, null);
+        Logger.error("err with find one user :fire:"), callback(err, null);
       });
   }
 
   logIn(callback) {
+    this.findModel();
     // Find user by email
     Logger.debug("searching for a patient 🔍");
-    PatientModel.findOne({ email: this.email })
-      .then(patient => {
-        if (!patient) {
+    this.Model.findOne({ email: this.email })
+      .then(user => {
+        if (!user) {
           Logger.error("no patiens with the same email 😖");
-          callback({ emailnotfound: "Email not found ⛔️" }, null);
+          return callback({ emailnotfound: "Email not found ⛔️" }, null);
         }
         bcrypt
-          .compare(this.password, patient.password)
+          .compare(this.password, user.password)
           .then(isMatch => {
             if (isMatch) {
               Logger.debug("the passwords are a match 💓");
               Logger.debug("creating the token 🔑");
               jwt.sign(
                 {
-                  id: patient.id,
-                  email: patient.email
+                  id: user.id,
+                  email: user.email
                 },
                 jwtSecret,
                 {
@@ -125,20 +124,27 @@ module.exports = class AuthServices {
                 (err, token) => {
                   if (err) {
                     Logger.error("err with the token eneration 💢");
-                    callback({ "err with the token eneration 💢": err }, null);
+                    return callback(
+                      { "err with the token eneration 💢": err },
+                      null
+                    );
                   }
                   Logger.debug(
                     "done creating the token sending back to the controller 🎮"
                   );
-                  callback(null, {
+                  return callback(null, {
                     success: true,
+                    "user type": this.header,
                     token: "Bearer " + token
                   });
                 }
               );
             } else {
               Logger.debug("the passwords are not a match 💔");
-              callback({ passwordincorrect: "Password incorrect 💢" }, null);
+              return callback(
+                { passwordincorrect: "Password incorrect 💢" },
+                null
+              );
             }
           })
           .catch(err => {
@@ -147,8 +153,8 @@ module.exports = class AuthServices {
           });
       })
       .catch(err => {
-        Logger.error("err with searching for a patient 💢", err);
-        callback({ "err with searching for a patient 💢": err }, null);
+        Logger.error("err with searching for a patient 💢", err),
+          callback({ "err with searching for a patient 💢": err }, null);
       });
   }
 };
