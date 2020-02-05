@@ -36,9 +36,24 @@ const medicineRoute = app => {
 
   route.post("/searchForPharmacyLocation", async (req, res) => {
     let input = { ...req.body };
-    console.log(input);
     MedicineServicesInstance.getMedsLocations(input.query)
-      .then(data => res.json(data))
+      .then(data =>{ 
+        var result = [];
+          data.forEach((med)=>{
+          med.pharmacyId.forEach(pharmacy => {
+            result.push({
+              lat: pharmacy.lat,
+              lng: pharmacy.lng,
+              label: pharmacy.name[0].toUpperCase(),
+              draggable: false,
+              title: "Pharmacy " + pharmacy.name,
+              www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
+            })
+          });
+        })
+      res.json(result)
+      })
+       
       .catch(err => console.log(err));
   });
 
