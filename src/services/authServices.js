@@ -17,9 +17,9 @@ module.exports = class AuthServices {
       phoneNumber,
       speciality
     } = {},
-    header
+    type
   ) {
-    this.header = header;
+    this.type = type;
     this.firstName = firstName;
     this.lastName = lastName;
     this.name = name;
@@ -31,7 +31,7 @@ module.exports = class AuthServices {
   }
 
   findModel() {
-    switch (this.header) {
+    switch (this.type) {
       case "patient":
         this.Model = PatientModel;
         break;
@@ -50,7 +50,7 @@ module.exports = class AuthServices {
     this.Model.findOne({ email: this.email })
       .then(user => {
         if (user) {
-          Logger.error(`a ${this.header} with the same email exists 🔥`);
+          Logger.error(`a ${this.type} with the same email exists 🔥`);
           return callback({ error: "Email already exists 🔥 " }, null);
         } else {
           Logger.debug("creating salt 😄");
@@ -115,6 +115,7 @@ module.exports = class AuthServices {
               jwt.sign(
                 {
                   id: user.id,
+                  type: this.type,
                   email: user.email
                 },
                 jwtSecret,
@@ -134,7 +135,7 @@ module.exports = class AuthServices {
                   );
                   return callback(null, {
                     success: true,
-                    "user type": this.header,
+                    "user type": this.type,
                     token: "Bearer " + token
                   });
                 }

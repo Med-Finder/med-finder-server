@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { validator } = require("../middlewares");
+const passport = require("passport");
 const authService = require("../../services/authServices");
 const Logger = require("../../loaders/logger");
 const route = Router();
@@ -7,7 +8,13 @@ const route = Router();
 const authRoute = app => {
   app.use("/auth", route);
 
-  route.get("/", (req, res) => console.log("auth route working"));
+  route.get(
+    "/",
+    passport.authenticate("jwt", {
+      session: false
+    }),
+    (req, res) => (console.log(req.user, req.authInfo), res.send("done"))
+  );
 
   route.post(
     "/register",
