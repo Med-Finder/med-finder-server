@@ -7,6 +7,7 @@ const Logger = require("../loaders/logger");
 
 module.exports = class AuthServices {
   constructor(
+    type,
     {
       firstName,
       lastName,
@@ -16,8 +17,7 @@ module.exports = class AuthServices {
       address,
       phoneNumber,
       speciality
-    } = {},
-    type
+    } = {}
   ) {
     this.type = type;
     this.firstName = firstName;
@@ -81,18 +81,20 @@ module.exports = class AuthServices {
               newUser
                 .save()
                 .then(user => {
-                  Logger.debug("done 😴"), callback(null, user);
+                  Logger.debug("done 😴");
+                  return callback(null, user);
                 })
                 .catch(err => {
-                  Logger.error("err with saving user :fire:"),
-                    callback(err, null);
+                  Logger.error("err with saving user :fire:");
+                  return callback(err, null);
                 });
             });
           });
         }
       })
       .catch(err => {
-        Logger.error("err with find one user :fire:"), callback(err, null);
+        Logger.error("err with find one user :fire:");
+        return callback(err, null);
       });
   }
 
@@ -149,13 +151,13 @@ module.exports = class AuthServices {
             }
           })
           .catch(err => {
-            Logger.error("err with hashing 💢", err),
-              callback({ "err with hashing 💢": err }, null);
+            Logger.error("err with hashing 💢", err);
+            return callback({ "err with hashing 💢": err }, null);
           });
       })
       .catch(err => {
-        Logger.error("err with searching for a patient 💢", err),
-          callback({ "err with searching for a patient 💢": err }, null);
+        Logger.error("err with searching for a patient 💢", err);
+        return callback({ "err with searching for a patient 💢": err }, null);
       });
   }
 };

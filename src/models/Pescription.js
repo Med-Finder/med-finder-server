@@ -13,13 +13,17 @@ const Pescription = new mongoose.Schema(
       ref: "Patient",
       required: true
     },
-    medicine: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Patient",
-      required: true
-    },
-    dosage: String, //should be revised : structure wise
-    schedule: String //should be revised : structure wise
+    medicines: [
+      {
+        medicine: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Medicine",
+          required: true
+        },
+        dosage: String, //should be revised : structure wise
+        schedule: String //should be revised : structure wise
+      }
+    ]
   },
   { timestamps: true }
 );

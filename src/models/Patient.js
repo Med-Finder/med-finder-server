@@ -44,8 +44,11 @@ const Patient = new mongoose.Schema(
     doctors: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" } // should we have this
     ],
-    medicines: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Medicine" } // should be tested
+    // medicines: [
+    //   { type: mongoose.Schema.Types.ObjectId, ref: "Medicine" } // should be tested
+    // ],
+    pescriptions: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Pescription" } // should we have this
     ]
   },
   { timestamps: true }
