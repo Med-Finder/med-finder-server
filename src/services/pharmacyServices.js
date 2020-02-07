@@ -27,9 +27,11 @@ module.exports = class PharmacyServices {
     return found;
   }
   async searchPharmacies(query) {
-    var searchResult = await Pharmacy.search(query).populate({
-      path: "medicines"
-    });
+    var searchResult = await Pharmacy.search(query)
+      .populate({
+        path: "medicines"
+      })
+      .lean();
     return searchResult;
   }
   async addMedicines(query, med) {
