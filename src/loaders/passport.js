@@ -1,5 +1,5 @@
 const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
-const { PatientModel } = require("./../models");
+const { PatientModel, DoctorModel, PharmacyModel } = require("./../models");
 const { jwtSecret } = require("../config");
 
 const opts = {};
@@ -9,10 +9,23 @@ opts.secretOrKey = jwtSecret;
 module.exports = passport => {
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
-      PatientModel.findById(jwt_payload.id)
-        .then(patient => {
-          if (patient) {
-            return done(null, patient);
+      switch (jwt_payload.type) {
+        case "patient":
+          model = PatientModel;
+          break;
+
+        case "doctor":
+          model = DoctorModel;
+          break;
+        case "pharmacy":
+          model = PharmacyModel;
+          break;
+      }
+      model
+        .findById(jwt_payload.id)
+        .then(user => {
+          if (user) {
+            return done(null, user, jwt_payload.type);
           }
           return done(null, false);
         })

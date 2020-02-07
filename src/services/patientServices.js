@@ -8,7 +8,7 @@ module.exports = class PatientServices {
         phoneNumber: patient.phoneNumber,
         email: patient.email,
         password: patient.password,
-        adress: patient.adress,
+        address: patient.address,
         image: patient.image,
         birthDate: patient.birthDate,
         gender: patient.gender

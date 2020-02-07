@@ -1,6 +1,8 @@
-const validateRegisterInput = require("./validatRegister");
 const validateLogInInput = require("./validateLogin");
+const validateHeadersType = require("./validateHeadersType");
+const validateInput = require("./input");
 module.exports = {
-  validateRegisterInput,
-  validateLogInInput
+  validateLogInInput,
+  validateHeadersType,
+  validateInput
 };

@@ -4,9 +4,13 @@ const validator = require("validator");
 
 const Doctor = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, "Please enter a full name"]
+      required: [true, "Please enter a first name"]
+    },
+    lastName: {
+      type: String,
+      required: [true, "Please enter a last name"]
     },
 
     speciality: {
@@ -21,13 +25,15 @@ const Doctor = new mongoose.Schema(
       unique: true,
       validate: value => {
         if (!validator.isEmail(value))
-          throw new Error({ error: "Invalid Email adress" });
+          throw new Error({ error: "Invalid Email address" });
       }
     },
 
     image: String,
 
-    latitude: String,
+    lat: Number,
+
+    lng: Number,
 
     openingHour: String,
 
@@ -36,9 +42,12 @@ const Doctor = new mongoose.Schema(
     password: { type: String, required: true },
     patients: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Patient" } // should we have this
+    ],
+    pescriptions: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Pescription" } // should we have this
     ]
   },
   { timestamps: true }
 );
 
-module.export = mongoose.model("Doctor", Doctor);
+module.exports = mongoose.model("Doctor", Doctor);

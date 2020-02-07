@@ -1,15 +1,17 @@
-const Doctor = require("../models/Doctor");
+const {DoctorModel} = require("../models");
 
-module.exports = class DoctorServices {
+module.exports  = class DoctorServices {
+  
   async createDoctor(doctor) {
     try {
-      const newDoctor = new Doctor({
-        name: doctor.name,
+      const newDoctor = new DoctorModel({
+        firstname: doctor.firstname,
+        lastname: doctor.lastname,
         speciality: doctor.speciality,
         email: doctor.email,
         image: doctor.image,
-        latitude: doctor.latitude,
-        longitude: doctor.longitude,
+        lat: doctor.lat,
+        lng: doctor.lng,
         openingHour: doctor.openingHour,
         closingHour: doctor.closingHour,
         password: doctor.password
@@ -20,7 +22,8 @@ module.exports = class DoctorServices {
       return savedDoctor;
     } catch (err) {
       console.log("err" + err);
-      res.status(500).send(err);
     }
   }
 };
+
+

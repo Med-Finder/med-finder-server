@@ -3,7 +3,6 @@ const isEmpty = require("is-empty");
 
 module.exports = function validateLogInInput(req, res, next) {
   let errors = {};
-
   //convert empty forms to string before validation
   const email = !isEmpty(req.body.email) ? req.body.email : "";
   const password = !isEmpty(req.body.password) ? req.body.password : "";

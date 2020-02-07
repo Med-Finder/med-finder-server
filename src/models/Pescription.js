@@ -13,15 +13,19 @@ const Pescription = new mongoose.Schema(
       ref: "Patient",
       required: true
     },
-    medicine: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Patient",
-      required: true
-    },
-    dosage: String, //should be revised : structure wise
-    schedule: String //should be revised : structure wise
+    medicines: [
+      {
+        medicine: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Medicine",
+          required: true
+        },
+        dosage: String, //should be revised : structure wise
+        schedule: String //should be revised : structure wise
+      }
+    ]
   },
   { timestamps: true }
 );
 // should a pharmacy has it's own medicine table with all of the quantities
-module.export = mongoose.model("Pescription", Pescription);
+module.exports = mongoose.model("Pescription", Pescription);
