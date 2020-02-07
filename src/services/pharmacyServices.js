@@ -1,11 +1,10 @@
 const Pharmacy = require("../models/Pharmacy");
 module.exports = class PharmacyServices {
-  
   async createPharmacy(pharmacy) {
     try {
       const newPharmacy = new Pharmacy({
         name: pharmacy.name,
-        adress: pharmacy.adress,
+        address: pharmacy.address,
         phoneNumber: pharmacy.phoneNumber,
         lat: pharmacy.lat,
         lng: pharmacy.lng,
@@ -28,17 +27,19 @@ module.exports = class PharmacyServices {
     return found;
   }
   async searchPharmacies(query) {
-    var searchResult = await Pharmacy.search(query).populate({path:'medicines'});
+    var searchResult = await Pharmacy.search(query).populate({
+      path: "medicines"
+    });
     return searchResult;
   }
   async addMedicines(query, med) {
     var searchResult = await Pharmacy.search(query)
-    .then(data => {
-      console.log(data[0].medicines, 'helloooooo')
-      data[0].medicines.push(med)
-      data[0].save()
-      console.log(data)
-    })
-    .catch(err => console.log(err, 'error updating med'))
+      .then(data => {
+        console.log(data[0].medicines, "helloooooo");
+        data[0].medicines.push(med);
+        data[0].save();
+        console.log(data);
+      })
+      .catch(err => console.log(err, "error updating med"));
   }
 };

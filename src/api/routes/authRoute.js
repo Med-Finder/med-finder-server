@@ -1,21 +1,29 @@
 const { Router } = require("express");
-const middlewares = require("../middlewares");
-const authService = require("../../services/authServices");
+const { validator } = require("../middlewares");
+const passport = require("passport");
+const { authServices } = require("../../services");
 const Logger = require("../../loaders/logger");
 const route = Router();
 
 const authRoute = app => {
   app.use("/auth", route);
 
-  route.get("/", (req, res) => console.log("auth route working"));
+  route.get(
+    "/",
+    passport.authenticate("jwt", {
+      session: false
+    }),
+    (req, res) => (console.log(req.user, req.authInfo), res.send("done"))
+  );
 
   route.post(
     "/register",
-    middlewares.validator.validateRegisterInput,
+    validator.validateHeadersType,
+    validator.validateInput,
     (req, res) => {
       Logger.debug("all fields are verified, staring to work ");
-      const newPatient = new authService(req.body);
-      newPatient.register((err, patient) => {
+      const newUser = new authServices(req.headers.headerstype, req.body);
+      newUser.register((err, patient) => {
         if (err) {
           return res.status(400).send(err);
         }
@@ -23,16 +31,22 @@ const authRoute = app => {
       });
     }
   );
-  route.post("/logIn", middlewares.validator.validateLogInInput, (req, res) => {
-    Logger.debug("all fields are verified, staring to work ");
-    const Patient = new authService(req.body);
-    Patient.logIn((error, result) => {
-      if (error) {
-        return res.status(400).json(error);
-      }
-      return res.send(result);
-    });
-  });
+
+  route.post(
+    "/logIn",
+    validator.validateHeadersType,
+    validator.validateLogInInput,
+    (req, res) => {
+      Logger.debug("all fields are verified, staring to work ");
+      const User = new authServices(req.headers.headerstype, req.body);
+      User.logIn((error, result) => {
+        if (error) {
+          return res.status(400).json(error);
+        }
+        return res.send(result);
+      });
+    }
+  );
 };
 
 module.exports = authRoute;
