@@ -1,5 +1,5 @@
 const express = require("express");
-const pharmacyRoute = require("./routes/pharmacies");
+const pharmacyRoute = require("./routes/pharmaciesRoute");
 // const patientRoute = require("./routes/patients");
 const doctorRoute = require("./routes/doctor");
 const medicineRoute = require("./routes/medicines");

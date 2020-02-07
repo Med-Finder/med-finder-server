@@ -1,5 +1,5 @@
 const Medicine = require("../models/Medicines");
-const Pharmacy = require("../models/Pharmacy")
+const Pharmacy = require("../models/Pharmacy");
 module.exports = class MedicineServices {
   async createMedicine(medicine) {
     try {
@@ -29,7 +29,9 @@ module.exports = class MedicineServices {
   }
   async searchMedicine(query) {
     try {
-      var searchResult = await Medicine.search(query).populate({path:'pharmacyId'});
+      var searchResult = await Medicine.search(query).populate({
+        path: "pharmacyId"
+      });
       return searchResult;
     } catch (err) {
       console.log(err);
@@ -41,17 +43,19 @@ module.exports = class MedicineServices {
     return found;
   }
   async addPharmacy(query, pharmacyId) {
-     await Medicine.search(query)
-    .then(data => {
-      console.log(data[0].pharmacyId, 'helloooooo from medicine')
-      data[0].pharmacyId.push(pharmacyId)
-      data[0].save()
-      console.log(data)
-    })
-    .catch(err => console.log(err, 'error updating med'))
+    await Medicine.search(query)
+      .then(data => {
+        console.log(data[0].pharmacyId, "helloooooo from medicine");
+        data[0].pharmacyId.push(pharmacyId);
+        data[0].save();
+        console.log(data);
+      })
+      .catch(err => console.log(err, "error updating med"));
   }
   async getMedsLocations(query) {
-     const result = await Medicine.search(query).populate({path:'pharmacyId'})
-      return result;
+    const result = await Medicine.search(query).populate({
+      path: "pharmacyId"
+    });
+    return result;
   }
-}
+};
