@@ -24,7 +24,8 @@ const pharmacyRoute = app => {
     console.log("locate pharmacy route");
     pharmacyServicesInstance
       .locatePharmacies()
-      .then(data => { res.json(data)
+      .then(data => {
+        res.json(data);
         var result = data.map(pharmacy => {
           return {
             lat: pharmacy.lat,
@@ -46,31 +47,29 @@ const pharmacyRoute = app => {
     console.log(input);
     pharmacyServicesInstance
       .searchPharmacies(input.query.toString())
-      .then(data => { res.json(data)
-        var result = data.map(pharmacy => {
-          var obj = {};
-          obj.lat = pharmacy.lat;
-          obj.lng = pharmacy.lng;
-          obj.label = pharmacy.name[0].toUpperCase();
-          obj.draggable = false;
-          obj.title = "Pharmacy " + pharmacy.name;
-          obj.www = `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`;
-          return obj;
-        });
-        res.end(result);
+      .then(data => {
+        res.send(
+          data.map(pharmacy => {
+            return {
+              lat: pharmacy.lat,
+              lng: pharmacy.lng,
+              title: pharmacy.name
+              // www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/` no need for this now
+            };
+          })
+        );
       })
       .catch(err => console.log(err));
-    //return res.status(200);
   });
-  
+
   route.post("/addMedicine", async (req, res, next) => {
     let input = { ...req.body };
     console.log(input);
     pharmacyServicesInstance
       .addMedicines(input.query, input.medicine)
-      .then(data => { 
-      console.log("medicine added with success", data)
-        })
+      .then(data => {
+        console.log("medicine added with success", data);
+      })
       .catch(err => console.log(err));
   });
 };
