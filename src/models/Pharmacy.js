@@ -7,8 +7,8 @@ const Pharmacy = new mongoose.Schema(
     phoneNumber: String, //should be revised : structure wise
     latitude: Number,
     longitude: Number,
-    openingHour: String,
-    closingHour: String, //should be revised : structure wise
+    openingHour: Number,
+    closingHour: Number, //should be revised : structure wise
     feedbacks: String,
     email: String,
     password: String,

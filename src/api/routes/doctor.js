@@ -20,12 +20,12 @@ const doctorRoute = app => {
   const doctorServicesInstance = new DoctorServices();
 
   route.post("/register", async (req, res, next) => {
-    const doctorInput = { ...req.body };
-    doctorServicesInstance
-      .createDoctor(doctorInput)
-      .then(data => console.log(data, "created doctor"))
-      .catch(err => console.log(err));
-    return res.status(200);
+    // const doctorInput = { ...req.body };
+    // doctorServicesInstance
+    //   .createDoctor(doctorInput)
+    //   .then(data => console.log(data, "created doctor"))
+    //   .catch(err => console.log(err));
+    // return res.status(200);
   });
 };
 
