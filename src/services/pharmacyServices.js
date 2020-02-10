@@ -32,6 +32,13 @@ module.exports = class PharmacyServices {
         path: "medicines"
       })
       .lean();
+
+    searchResult = searchResult.filter(
+      pharmacy =>
+        pharmacy.openingHour < new Date().getHours() &&
+        pharmacy.closingHour > new Date().getHours()
+    );
+    console.log(searchResult);
     return searchResult;
   }
   async addMedicines(query, med) {
