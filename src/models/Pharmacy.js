@@ -34,6 +34,8 @@ const Pharmacy = new mongoose.Schema(
   }
 );
 // should a Pharmacy has it's own medicine table with all of the quantities ?
-Pharmacy.index({ location: "2dsphere" });
-Pharmacy.plugin(searchable);
+// Pharmacy.plugin(searchable);
+Pharmacy.index({ location: "2dsphere", name: "text" });
+// Pharmacy.index({  });
+
 module.exports = mongoose.model("Pharmacy", Pharmacy);

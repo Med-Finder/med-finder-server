@@ -28,19 +28,21 @@ module.exports = class PharmacyServices {
     return found;
   }
   searchPharmaciestest(query, userCoordinates, callback) {
-    console.log(userCoordinates.lng, userCoordinates.lat);
-    // Pharmacy.search(query)
     Pharmacy.find({
+      $text: { $search: query },
       location: {
         $near: {
           $geometry: {
             type: "Point",
             coordinates: [userCoordinates.lng, userCoordinates.lat]
-          }
-          // $maxDistance: 1 // in meter
+          },
+          $maxDistance: 100000 // in meter
         }
-      }
+      },
+      openingHour: { $lt: new Date().getHours() },
+      closingHour: { $gt: new Date().getHours() }
     })
+      // .search(query)
       .then(data => callback(null, data))
       .catch(err => callback(err, null));
   }
