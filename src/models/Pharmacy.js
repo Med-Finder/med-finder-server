@@ -5,8 +5,19 @@ const Pharmacy = new mongoose.Schema(
     name: { type: String, searchable: true },
     address: { type: String, searchable: false },
     phoneNumber: String, //should be revised : structure wise
-    latitude: Number,
-    longitude: Number,
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    },
+    // latitude: Number,
+    // longitude: Number,
     openingHour: Number,
     closingHour: Number, //should be revised : structure wise
     feedbacks: String,
@@ -22,6 +33,7 @@ const Pharmacy = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
-// should a pharmacy has it's own medicine table with all of the quantities ?
+// should a Pharmacy has it's own medicine table with all of the quantities ?
+Pharmacy.index({ location: "2dsphere" });
 Pharmacy.plugin(searchable);
 module.exports = mongoose.model("Pharmacy", Pharmacy);

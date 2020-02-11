@@ -11,9 +11,7 @@ const medicineRoute = app => {
   const MedicineServicesInstance = new MedicineServices();
 
   route.post("/save", async (req, res, next) => {
-    // console.log("req body", req.body);
     const medicineInput = { ...req.body };
-
     MedicineServicesInstance.createMedicine(medicineInput)
       .then(data => console.log(data, "\n medicine saved in database"))
       .catch(err => console.log(err, "lerrrrrrrrrrrrrrr"));
@@ -38,10 +36,13 @@ const medicineRoute = app => {
             result.push({
               lat: pharmacy.lat,
               lng: pharmacy.lng,
-              label: pharmacy.name[0].toUpperCase(),
-              draggable: false,
-              title: "Pharmacy " + pharmacy.name,
-              www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
+              title: pharmacy.name
+              // lat: pharmacy.lat,
+              // lng: pharmacy.lng,
+              // label: pharmacy.name[0].toUpperCase(),
+              // draggable: false,
+              // title: "Pharmacy " + pharmacy.name,
+              // www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
             });
           });
         });

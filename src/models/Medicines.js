@@ -17,7 +17,7 @@ const Medicine = new mongoose.Schema(
     sameAs: { type: String }, //required: true }, //should be id ?
     quantity: { type: String }, //required: true },
     pharmacyId: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Pharmacy" } //required: true ,unique:true } // should be tested
+      { type: mongoose.Schema.Types.ObjectId, ref: "Pharmacy", defaut: [] } //required: true ,unique:true } // should be tested
     ]
   },
   {

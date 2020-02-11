@@ -1,4 +1,3 @@
-console.log("trying");
 const config = require("./config");
 
 const express = require("express");

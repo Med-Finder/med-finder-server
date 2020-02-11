@@ -44,10 +44,8 @@ module.exports = class MedicineServices {
   async addPharmacy(query, pharmacyId) {
     await MedicinesModel.search(query)
       .then(data => {
-        console.log(data[0].pharmacyId, "helloooooo from medicine");
         data[0].pharmacyId.push(pharmacyId);
         data[0].save();
-        console.log(data);
       })
       .catch(err => console.log(err, "error updating med"));
   }

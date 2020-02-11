@@ -1,5 +1,5 @@
 const { Router } = require("express");
-// import middlewares from "../middlewares";
+const { validator } = require("../middlewares");
 const PharmacyServices = require("../../services/pharmacyServices");
 
 const route = Router();
@@ -25,30 +25,41 @@ const pharmacyRoute = app => {
     pharmacyServicesInstance
       .locatePharmacies()
       .then(data => {
-        res.json(data);
-        var result = data.map(pharmacy => {
-          return {
-            lat: pharmacy.lat,
-            lng: pharmacy.lng,
-            label: pharmacy.name[0].toUpperCase(),
-            draggable: false,
-            title: "Pharmacy " + pharmacy.name,
-            www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
-          };
-        });
-        res.json(result);
+        res.send(
+          data.map(pharmacy => {
+            return {
+              lat: pharmacy.lat,
+              lng: pharmacy.lng,
+              title: pharmacy.name
+              // www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/` no need for this now
+            };
+          })
+        );
       })
       .catch(err => console.log(err));
     return res.status(200);
   });
+  route.post("/test", validator.validateUserCoordinates, (req, res, next) => {
+    pharmacyServicesInstance.searchPharmaciestest(
+      req.body.query.toString(),
+      req.headers["user-coordinates"],
+      (err, data) => {
+        if (err) {
+          return res.send({ err });
+        }
+        return res.send(data);
+      }
+    );
+  });
 
-  route.post("/search", async (req, res, next) => {
+  route.post("/search", validator.validateUserCoordinates, (req, res, next) => {
     let input = { ...req.body };
     console.log(input);
     pharmacyServicesInstance
-      .searchPharmacies(input.query.toString())
+      .searchPharmacies(input.query.toString(), req.headers["user-coordinates"])
       .then(data => {
-        res.send(
+        console.log(data);
+        return res.send(
           data.map(pharmacy => {
             return {
               lat: pharmacy.lat,
