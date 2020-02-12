@@ -6,8 +6,9 @@ module.exports = class PharmacyServices {
         name: pharmacy.name,
         address: pharmacy.address,
         phoneNumber: pharmacy.phoneNumber,
-        lat: pharmacy.lat,
-        lng: pharmacy.lng,
+        // lat: pharmacy.lat,
+        // lng: pharmacy.lng,
+        location: pharmacy.location,
         openingHour: pharmacy.openingHour,
         closingHour: pharmacy.closingHour,
         feedbacks: pharmacy.feedbacks,
@@ -26,14 +27,54 @@ module.exports = class PharmacyServices {
     var found = await Pharmacy.find({});
     return found;
   }
-  async searchPharmacies(query) {
-    var searchResult = await Pharmacy.search(query)
-      .populate({
-        path: "medicines"
-      })
-      .lean();
-    return searchResult;
+  searchPharmacies(query, userCoordinates, callback) {
+    Pharmacy.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [userCoordinates.lng, userCoordinates.lat]
+          },
+          $maxDistance: 100000 // in meter
+        }
+      },
+      openingHour: { $lt: new Date().getHours() },
+      closingHour: { $gt: new Date().getHours() },
+      name: new RegExp(query, "g")
+    })
+      .then(data => callback(null, data))
+      .catch(err => callback(err, null));
   }
+
+  // async searchPharmacies(query, userCoordinates) {
+  //   try {
+  //     console.log(query, userCoordinates);
+  //     var searchResult = await Pharmacy.find({
+  //       location: {
+  //         $near: {
+  //           $geometry: {
+  //             type: "Point",
+  //             coordinates: [userCoordinates.lng, userCoordinates.lat]
+  //           },
+  //           $maxDistance: 10000 // in meter
+  //         }
+  //       }
+  //     })
+  //       // .search(query)
+  //       .populate({
+  //         path: "medicines"
+  //       })
+  //       .lean();
+  //     searchResult = searchResult.filter(
+  //       pharmacy =>
+  //         pharmacy.openingHour < new Date().getHours() &&
+  //         pharmacy.closingHour > new Date().getHours()
+  //     );
+  //     return searchResult;
+  //   } catch (e) {
+  //     return e;
+  //   }
+  // }
   async addMedicines(query, med) {
     var searchResult = await Pharmacy.search(query)
       .then(data => {
