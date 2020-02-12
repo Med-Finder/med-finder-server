@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const searchable = require("mongoose-regex-search");
 const Pharmacy = new mongoose.Schema(
   {
     name: { type: String, searchable: true },
@@ -35,6 +34,5 @@ const Pharmacy = new mongoose.Schema(
 );
 // should a Pharmacy has it's own medicine table with all of the quantities ?
 Pharmacy.index({ location: "2dsphere" });
-Pharmacy.plugin(searchable);
 
 module.exports = mongoose.model("Pharmacy", Pharmacy);

@@ -31,9 +31,20 @@ const Doctor = new mongoose.Schema(
 
     image: String,
 
-    lat: Number,
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    },
+    // lat: Number,
 
-    lng: Number,
+    // lng: Number,
 
     openingHour: String,
 
@@ -49,5 +60,7 @@ const Doctor = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+Doctor.index({ location: "2dsphere" });
 
 module.exports = mongoose.model("Doctor", Doctor);

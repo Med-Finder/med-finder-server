@@ -27,7 +27,7 @@ module.exports = class PharmacyServices {
     var found = await Pharmacy.find({});
     return found;
   }
-  searchPharmaciestest(query, userCoordinates, callback) {
+  searchPharmacies(query, userCoordinates, callback) {
     Pharmacy.find({
       location: {
         $near: {
@@ -46,35 +46,35 @@ module.exports = class PharmacyServices {
       .catch(err => callback(err, null));
   }
 
-  async searchPharmacies(query, userCoordinates) {
-    try {
-      console.log(query, userCoordinates);
-      var searchResult = await Pharmacy.find({
-        location: {
-          $near: {
-            $geometry: {
-              type: "Point",
-              coordinates: [userCoordinates.lng, userCoordinates.lat]
-            },
-            $maxDistance: 10000 // in meter
-          }
-        }
-      })
-        // .search(query)
-        .populate({
-          path: "medicines"
-        })
-        .lean();
-      searchResult = searchResult.filter(
-        pharmacy =>
-          pharmacy.openingHour < new Date().getHours() &&
-          pharmacy.closingHour > new Date().getHours()
-      );
-      return searchResult;
-    } catch (e) {
-      return e;
-    }
-  }
+  // async searchPharmacies(query, userCoordinates) {
+  //   try {
+  //     console.log(query, userCoordinates);
+  //     var searchResult = await Pharmacy.find({
+  //       location: {
+  //         $near: {
+  //           $geometry: {
+  //             type: "Point",
+  //             coordinates: [userCoordinates.lng, userCoordinates.lat]
+  //           },
+  //           $maxDistance: 10000 // in meter
+  //         }
+  //       }
+  //     })
+  //       // .search(query)
+  //       .populate({
+  //         path: "medicines"
+  //       })
+  //       .lean();
+  //     searchResult = searchResult.filter(
+  //       pharmacy =>
+  //         pharmacy.openingHour < new Date().getHours() &&
+  //         pharmacy.closingHour > new Date().getHours()
+  //     );
+  //     return searchResult;
+  //   } catch (e) {
+  //     return e;
+  //   }
+  // }
   async addMedicines(query, med) {
     var searchResult = await Pharmacy.search(query)
       .then(data => {
