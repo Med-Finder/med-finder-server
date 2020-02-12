@@ -29,7 +29,6 @@ module.exports = class PharmacyServices {
   }
   searchPharmaciestest(query, userCoordinates, callback) {
     Pharmacy.find({
-      $text: { $search: query },
       location: {
         $near: {
           $geometry: {
@@ -40,9 +39,9 @@ module.exports = class PharmacyServices {
         }
       },
       openingHour: { $lt: new Date().getHours() },
-      closingHour: { $gt: new Date().getHours() }
+      closingHour: { $gt: new Date().getHours() },
+      name: new RegExp(query, "g")
     })
-      // .search(query)
       .then(data => callback(null, data))
       .catch(err => callback(err, null));
   }
