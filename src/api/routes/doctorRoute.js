@@ -1,23 +1,13 @@
 const { Router } = require("express");
-const middlewares = require("../middlewares");
-const bodyParser = require("body-parser");
+const { validator } = require("../middlewares");
 const DoctorServices = require("../../services/doctorServices");
 
 const route = Router();
 
 const doctorRoute = app => {
-  app.use(
-    bodyParser.urlencoded({
-      extended: true
-    })
-  );
-  app.use(bodyParser.json());
-
   app.use("/doctor", route);
 
   route.get("/", (req, res) => console.log("\n doctor route working"));
-
-  const doctorServicesInstance = new DoctorServices();
 
   route.post("/register", async (req, res, next) => {
     // const doctorInput = { ...req.body };
@@ -26,6 +16,15 @@ const doctorRoute = app => {
     //   .then(data => console.log(data, "created doctor"))
     //   .catch(err => console.log(err));
     // return res.status(200);
+  });
+  route.post("/search", validator.validateUserCoordinates, (req, res, next) => {
+    const newDoctorServices = new DoctorServices(
+      req.headers["user-coordinates"]
+    );
+    newDoctorServices.searchDoctor(req.body.query, (err, doctors) => {
+      if (err) return res.send({ err });
+      return res.send(doctors);
+    });
   });
 };
 

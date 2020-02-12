@@ -46,9 +46,9 @@ const Doctor = new mongoose.Schema(
 
     // lng: Number,
 
-    openingHour: String,
+    openingHour: Number,
 
-    closingHour: String,
+    closingHour: Number,
 
     password: { type: String, required: true },
     patients: [
