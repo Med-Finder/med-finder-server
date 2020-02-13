@@ -26,29 +26,71 @@ module.exports = class MedicineServices {
       res.status(500).send(err);
     }
   }
-  async searchMedicine(query) {
-    try {
-      var searchResult = await MedicinesModel.search(query).populate({
-        path: "pharmacyId"
-      });
-      return searchResult;
-    } catch (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
+  // async searchMedicine(query) {
+  //   try {
+  //     var searchResult = await MedicinesModel.search(query).populate({
+  //       path: "pharmacyId"
+  //     });
+  //     return searchResult;
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(500).send(err);
+  //   }
+  // }
+  searchMedicine(query, callback) {
+    const regExpQuery =
+      query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
+    MedicinesModel.aggregate([
+      { $match: { name: regExpQuery } },
+      { $unwind: "$pharmacyId" },
+      {
+        $lookup: {
+          from: "pharmacies",
+          localField: "pharmacyId",
+          foreignField: "_id",
+          as: "pharmacyId"
+        }
+      },
+      { $unwind: "$pharmacyId" },
+      { $replaceRoot: { newRoot: "$pharmacyId" } },
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [32, 30] },
+          key: "location",
+          distanceField: "dist.calculated",
+          maxDistance: 100000
+        }
+      }
+
+      // {
+      //   $project: {
+      //     _id: "$pharmacy[0]._id",
+      //     location: "$pharmacy[0].location",
+      //     name: "$pharmacy[0].name",
+      //     openingHour: "$pharmacy[0].openingHour",
+      //     closingHour: "$pharmacy[0].closingHour"
+      //   }
+      // }
+    ])
+
+      // MedicinesModel.find({ name: regExpQuery })
+      // .populate("pharmacy")
+      .then(data => callback(null, data))
+      .catch(err => callback(err, null));
   }
+
   async getAllMedicines() {
     var found = await MedicinesModel.find({});
     return found;
   }
-  async addPharmacy(query, pharmacyId) {
-    await MedicinesModel.search(query)
-      .then(data => {
-        data[0].pharmacyId.push(pharmacyId);
-        data[0].save();
-      })
-      .catch(err => console.log(err, "error updating med"));
-  }
+  // async addPharmacy(query, pharmacyId) {
+  //   await MedicinesModel.search(query)
+  //     .then(data => {
+  //       data[0].pharmacyId.push(pharmacyId);
+  //       data[0].save();
+  //     })
+  //     .catch(err => console.log(err, "error updating med"));
+  // }
   async getMedsLocations(query) {
     const result = await MedicinesModel.search(query).populate({
       path: "pharmacyId"

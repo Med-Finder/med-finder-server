@@ -89,15 +89,13 @@ const pharmacyRoute = app => {
   //     .catch(err => console.log(err));
   // });
 
-  route.post("/addMedicine", async (req, res, next) => {
-    let input = { ...req.body };
+  route.post("/addMedicine", (req, res, next) => {
+    let input = { ...req.body }; // has the pharmacy id and the med id
     console.log(input);
     pharmacyServicesInstance
-      .addMedicines(input.query, input.medicine)
-      .then(data => {
-        console.log("medicine added with success", data);
-      })
-      .catch(err => console.log(err));
+      .addMedicines(input.pharmacyId, input.medicineId)
+      .then(msg => res.send(msg))
+      .catch(err => res.send(err));
   });
 };
 

@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const middlewares = require("../middlewares");
+const { validator } = require("../middlewares");
 const MedicineServices = require("../../services/medicineServices");
 
 const route = Router();
@@ -56,7 +56,19 @@ const medicineRoute = app => {
     return res.status(200);
   });
 
-  route.post("/addPharmacy", async (req, res, next) => {
+  route.post(
+    "/search/:query/:coordinates",
+    validator.validateUserCoordinates,
+    (req, res, next) => {
+      const newMedicineServices = new MedicineServices(req.params.coordinates);
+      newMedicineServices.searchMedicine(req.params.query, (err, datum) => {
+        if (err) return res.send({ err });
+        return res.send(datum);
+      });
+    }
+  );
+
+  route.post("/addPharmacy", (req, res, next) => {
     let input = { ...req.body };
     console.log(input);
     MedicineServicesInstance.addPharmacy(input.query, input.pharmacyId)
