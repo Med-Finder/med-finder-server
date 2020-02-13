@@ -49,10 +49,31 @@ module.exports = class MedicineServices {
       })
       .catch(err => console.log(err, "error updating med"));
   }
-  async getMedsLocations(query) {
-    const result = await MedicinesModel.search(query).populate({
+  async getMedsLocations(query, pos) {
+    // FIXME: changed this. Added population conditions
+    // see mongoose schema
+    let populate = {
       path: "pharmacyId"
-    });
+    };
+
+    if(pos) {
+      populate.conditions = {
+        location: {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [pos.lng, pos.lat]
+            }
+          }
+        }
+      };
+    }
+    let find_query = {};
+    if(query) find_query.name = new RegExp(query, "i");
+
+    // FIXME: changed this. Finde instead of search
+    // const result = await MedicinesModel.search(query).populate(populate);
+    const result = await MedicinesModel.find(find_query).populate(populate);
     return result;
   }
 };

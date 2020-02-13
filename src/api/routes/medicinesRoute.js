@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const middlewares = require("../middlewares");
+const { validator } = require("../middlewares");
 const bodyParser = require("body-parser");
 const MedicineServices = require("../../services/medicineServices");
 
@@ -26,23 +26,20 @@ const medicineRoute = app => {
       .catch(err => console.log(err, "dddd"));
   });
 
-  route.post("/searchForPharmacyLocation", async (req, res) => {
+  route.post("/searchForPharmacyLocation", validator.validateUserCoordinates, async (req, res) => {
     let input = { ...req.body };
-    MedicineServicesInstance.getMedsLocations(input.query)
+    // FIXME: changed this. Added coordinates from header
+    MedicineServicesInstance.getMedsLocations(
+      input.query,
+      req.headers["user-coordinates"])
       .then(data => {
         var result = [];
         data.forEach(med => {
           med.pharmacyId.forEach(pharmacy => {
             result.push({
-              lat: pharmacy.lat,
-              lng: pharmacy.lng,
+              lat: pharmacy.location.coordinates[1],
+              lng: pharmacy.location.coordinates[0],
               title: pharmacy.name
-              // lat: pharmacy.lat,
-              // lng: pharmacy.lng,
-              // label: pharmacy.name[0].toUpperCase(),
-              // draggable: false,
-              // title: "Pharmacy " + pharmacy.name,
-              // www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/`
             });
           });
         });
