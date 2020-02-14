@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const searchable = require("mongoose-regex-search");
 
 const Medicine = new mongoose.Schema(
   {
-    name: { type: String, searchable: true, required: true },
+    name: { type: String, required: true },
     medicineClass: { type: String, required: true },
     cost: { type: String, required: true }, //should it be string or number
     administrationRoute: { type: String, required: true },
@@ -26,5 +25,5 @@ const Medicine = new mongoose.Schema(
   },
   { timestamps: true }
 );
-Medicine.plugin(searchable);
+
 module.exports = mongoose.model("Medicine", Medicine);

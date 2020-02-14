@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Pharmacy = new mongoose.Schema(
   {
-    name: { type: String, searchable: true },
-    address: { type: String, searchable: false },
+    name: { type: String },
+    address: { type: String },
     phoneNumber: String, //should be revised : structure wise
     location: {
       type: {
@@ -15,8 +15,6 @@ const Pharmacy = new mongoose.Schema(
         required: true
       }
     },
-    // latitude: Number,
-    // longitude: Number,
     openingHour: Number,
     closingHour: Number, //should be revised : structure wise
     feedbacks: String,

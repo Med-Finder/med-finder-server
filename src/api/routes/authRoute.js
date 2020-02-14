@@ -23,11 +23,9 @@ const authRoute = app => {
     (req, res) => {
       Logger.debug("all fields are verified, staring to work ");
       const newUser = new authServices(req.headers.headerstype, req.body);
-      newUser.register((err, patient) => {
-        if (err) {
-          return res.status(400).send(err);
-        }
-        return res.status(200).send(patient);
+      newUser.register((err, user) => {
+        if (err) return res.status(400).send(err);
+        return res.status(200).send(user);
       });
     }
   );
@@ -40,9 +38,7 @@ const authRoute = app => {
       Logger.debug("all fields are verified, staring to work ");
       const User = new authServices(req.headers.headerstype, req.body);
       User.logIn((error, result) => {
-        if (error) {
-          return res.status(400).json(error);
-        }
+        if (error) return res.status(400).json(error);
         return res.send(result);
       });
     }

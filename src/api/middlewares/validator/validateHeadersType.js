@@ -9,7 +9,7 @@ module.exports = validateLogInInput = (req, res, next) => {
       return res
         .status(400)
         .send(
-          `not a valid request type 😯 choose either patient, doctor or pharmacie; you entered "${req.headers.headerstype}"`
+          `not a valid request type 😯 choose either patient, doctor or pharmacy; you entered "${req.headers.headerstype}"`
         );
   }
 };
