@@ -1,8 +1,8 @@
-const Pharmacy = require("../models/Pharmacy");
+const { PharmacyModel, MedicinesModel } = require("../models");
 module.exports = class PharmacyServices {
   async createPharmacy(pharmacy) {
     try {
-      const newPharmacy = new Pharmacy({
+      const newPharmacy = new PharmacyModel({
         name: pharmacy.name,
         address: pharmacy.address,
         phoneNumber: pharmacy.phoneNumber,
@@ -24,13 +24,13 @@ module.exports = class PharmacyServices {
     }
   }
   async locatePharmacies() {
-    var found = await Pharmacy.find({});
+    var found = await PharmacyModel.find({});
     return found;
   }
   searchPharmacies(query, userCoordinates, callback) {
     const regExpQuery =
       query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
-    Pharmacy.find({
+    PharmacyModel.find({
       location: {
         $near: {
           $geometry: {
@@ -51,7 +51,7 @@ module.exports = class PharmacyServices {
   // async searchPharmacies(query, userCoordinates) {
   //   try {
   //     console.log(query, userCoordinates);
-  //     var searchResult = await Pharmacy.find({
+  //     var searchResult = await PharmacyModel.find({
   //       location: {
   //         $near: {
   //           $geometry: {
@@ -77,14 +77,17 @@ module.exports = class PharmacyServices {
   //     return e;
   //   }
   // }
-  async addMedicines(query, med) {
-    var searchResult = await Pharmacy.search(query)
-      .then(data => {
-        console.log(data[0].medicines, "helloooooo");
-        data[0].medicines.push(med);
-        data[0].save();
-        console.log(data);
-      })
-      .catch(err => console.log(err, "error updating med"));
+  async addMedicines(pharmacyId, medicineId) {
+    try {
+      await PharmacyModel.findByIdAndUpdate(pharmacyId, {
+        $push: { medicines: medicineId }
+      });
+      await MedicinesModel.findByIdAndUpdate(medicineId, {
+        $push: { pharmacyId: pharmacyId }
+      });
+      return "done adding";
+    } catch (err) {
+      return err;
+    }
   }
 };
