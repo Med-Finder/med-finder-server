@@ -61,10 +61,13 @@ const medicineRoute = app => {
     validator.validateUserCoordinates,
     (req, res, next) => {
       const newMedicineServices = new MedicineServices(req.params.coordinates);
-      newMedicineServices.searchMedicine(req.params.query, (err, datum) => {
-        if (err) return res.send({ err });
-        return res.send(datum);
-      });
+      newMedicineServices.searchMedicine(
+        req.params.query,
+        (err, pharmacies) => {
+          if (err) return res.send({ err });
+          return res.send(pharmacies);
+        }
+      );
     }
   );
 

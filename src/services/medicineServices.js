@@ -1,5 +1,9 @@
-const { MedicinesModel } = require("../models");
+const { MedicinesModel, PharmacyModel } = require("../models");
+
 module.exports = class MedicineServices {
+  constructor(coordinates) {
+    this.coordinates = coordinates;
+  }
   async createMedicine(medicine) {
     try {
       const newMedicine = new MedicinesModel({
@@ -40,41 +44,46 @@ module.exports = class MedicineServices {
   searchMedicine(query, callback) {
     const regExpQuery =
       query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
-    MedicinesModel.aggregate([
-      { $match: { name: regExpQuery } },
-      { $unwind: "$pharmacyId" },
-      {
-        $lookup: {
-          from: "pharmacies",
-          localField: "pharmacyId",
-          foreignField: "_id",
-          as: "pharmacyId"
-        }
-      },
-      { $unwind: "$pharmacyId" },
-      { $replaceRoot: { newRoot: "$pharmacyId" } },
+    PharmacyModel.aggregate([
       {
         $geoNear: {
-          near: { type: "Point", coordinates: [32, 30] },
+          near: { type: "Point", coordinates: this.coordinates },
           key: "location",
           distanceField: "dist.calculated",
           maxDistance: 100000
         }
+      },
+      { $unwind: "$medicines" },
+      {
+        $lookup: {
+          from: "medicines",
+          localField: "medicines",
+          foreignField: "_id",
+          as: "medicines"
+        }
+      },
+      { $unwind: "$medicines" },
+      { $match: { "medicines.name": regExpQuery } },
+      {
+        $set: {
+          open: {
+            $and: [
+              { $lt: ["$openingHour", new Date().getHours()] },
+              { $gt: ["$closingHour", new Date().getHours()] }
+            ]
+          }
+        }
+      },
+      { $match: { open: true } },
+      {
+        $group: {
+          _id: "$_id",
+          name: { $first: "$name" },
+          lat: { $first: { $arrayElemAt: ["$location.coordinates", 1] } },
+          lng: { $first: { $arrayElemAt: ["$location.coordinates", 0] } }
+        }
       }
-
-      // {
-      //   $project: {
-      //     _id: "$pharmacy[0]._id",
-      //     location: "$pharmacy[0].location",
-      //     name: "$pharmacy[0].name",
-      //     openingHour: "$pharmacy[0].openingHour",
-      //     closingHour: "$pharmacy[0].closingHour"
-      //   }
-      // }
     ])
-
-      // MedicinesModel.find({ name: regExpQuery })
-      // .populate("pharmacy")
       .then(data => callback(null, data))
       .catch(err => callback(err, null));
   }
