@@ -11,6 +11,9 @@ module.exports = function validateRegisterInputDoctor(req, res, next) {
   const lastName = !isEmpty(req.body.lastName) ? req.body.lastName : "";
   const speciality = !isEmpty(req.body.speciality) ? req.body.speciality : "";
   const email = !isEmpty(req.body.email) ? req.body.email : "";
+  const coordinates = !isEmpty(req.body.coordinates)
+    ? req.body.coordinates
+    : "";
   const password = !isEmpty(req.body.password) ? req.body.password : "";
   const password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
 
@@ -53,12 +56,25 @@ module.exports = function validateRegisterInputDoctor(req, res, next) {
   if (!Validator.equals(password, password2)) {
     errors.password2 = "Passwords must match";
   }
+  //coordinates empty
+  if (Validator.isEmpty(coordinates)) {
+    errors.coordinates = "Confirm coordinates field is required";
+  }
+  //coordinates is an array
+  if (!Array.isArray(coordinates)) {
+    errors.coordinates =
+      "coordinates must be an array that follow this pattern [lng, lat] ";
+  }
+  //coordinates are valid
+  if (!(Math.abs(coordinates[0]) <= 180 && Math.abs(coordinates[0]) <= 90)) {
+    errors.coordinates = `invalid coordinates , you've entered [lng=${coordinates[0]}, lat=${coordinates[1]}]`;
+  }
   //return the error object with any/all errors
   //as well as an isValid boolean that checks to see
   //if we have any error
   if (!isEmpty(errors)) {
     return res.status(400).send(errors);
   }
-  req.body = { firstName, lastName, speciality, email, password };
+  req.body = { firstName, lastName, speciality, coordinates, email, password };
   next();
 };

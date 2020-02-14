@@ -13,11 +13,11 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
     ? req.body.phoneNumber
     : "";
   const email = !isEmpty(req.body.email) ? req.body.email : "";
-  const password = !isEmpty(req.body.password) ? req.body.password : "";
-  const password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
   const coordinates = !isEmpty(req.body.coordinates)
     ? req.body.coordinates
     : "";
+  const password = !isEmpty(req.body.password) ? req.body.password : "";
+  const password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
   /*
       Checks for empty fields
   */
