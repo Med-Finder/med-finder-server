@@ -16,6 +16,7 @@ module.exports = class AuthServices {
       password,
       address,
       phoneNumber,
+      location,
       speciality
     } = {}
   ) {
@@ -24,6 +25,7 @@ module.exports = class AuthServices {
     this.lastName = lastName;
     this.name = name;
     this.email = email;
+    this.location = location;
     this.password = password;
     this.address = address;
     this.phoneNumber = phoneNumber;
@@ -66,6 +68,7 @@ module.exports = class AuthServices {
                 Logger.error("err with hashing 🔥");
                 return callback(err, null);
               }
+              console.log(this.location);
               Logger.debug("making new user 😄");
               const newUser = new this.Model({
                 firstName: this.firstName,
@@ -73,6 +76,7 @@ module.exports = class AuthServices {
                 name: this.name,
                 email: this.email,
                 address: this.address,
+                location: this.location,
                 phoneNumber: this.phoneNumber,
                 speciality: this.speciality,
                 password: hash

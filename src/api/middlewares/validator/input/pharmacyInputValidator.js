@@ -2,6 +2,7 @@ const isEmpty = require("is-empty");
 const Validator = require("validator");
 module.exports = function validateRegisterInputPharmacy(req, res, next) {
   //Instantiate our errors object
+
   let errors = {};
   /*
       Convert all empty fields to strings, before running
@@ -55,10 +56,10 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
   if (!Validator.equals(password, password2)) {
     errors.password2 = "Passwords must match";
   }
-  //coordinates empty
-  if (Validator.isEmpty(coordinates)) {
-    errors.coordinates = "Confirm coordinates field is required";
-  }
+  // //coordinates empty
+  // if (Validator.isEmpty(coordinates)) {
+  //   errors.coordinates = "Confirm coordinates field is required";
+  // }
   //coordinates is an array
   if (!Array.isArray(coordinates)) {
     errors.coordinates =
@@ -75,6 +76,14 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
     return res.status(400).send(errors);
   }
 
-  req.body = { name, address, phoneNumber, coordinates, email, password };
+  // coordinates = JSON.stringify(coordinates);
+  req.body = {
+    name,
+    address,
+    phoneNumber,
+    location: { coordinates, type: "Point" },
+    email,
+    password
+  };
   next();
 };
