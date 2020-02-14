@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const { validator } = require("../middlewares");
-const { PharmacyServices } = require("../../services");
-
+const { pharmacyServices } = require("../../services");
+const passport = require("passport");
 const route = Router();
 
 const pharmacyRoute = app => {
   app.use("/pharmacy", route);
   route.get("/", (req, res) => console.log("pharmacy route working"));
-  const pharmacyServicesInstance = new PharmacyServices();
+  const pharmacyServicesInstance = new pharmacyServices();
 
   route.post("/create", async (req, res, next) => {
     // console.log("req body", req.body);
@@ -19,6 +19,14 @@ const pharmacyRoute = app => {
       .catch(err => console.log(err));
     return res.status(200);
   });
+
+  route.get(
+    "/allMedicines",
+    passport.authenticate("jwt", {
+      session: false
+    }),
+    (req, res, next) => {}
+  );
 
   route.get("/locateAllPharmacies", async (req, res, next) => {
     console.log("locate pharmacy route");
