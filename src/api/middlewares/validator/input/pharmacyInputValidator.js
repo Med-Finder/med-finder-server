@@ -73,6 +73,8 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
   }
   //closingHour and openingHour  are valid
   if (
+    typeof openingHour !== "number" ||
+    typeof closingHour !== "number" ||
     openingHour < 0 ||
     closingHour < 0 ||
     openingHour > 24 ||
