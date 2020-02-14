@@ -17,7 +17,7 @@ const doctorRoute = app => {
     //   .catch(err => console.log(err));
     // return res.status(200);
   });
-  route.post(
+  route.get(
     "/search/:query/:coordinates",
     validator.validateUserCoordinates,
     (req, res, next) => {

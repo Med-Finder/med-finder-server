@@ -50,7 +50,7 @@ const pharmacyRoute = app => {
   // route.post("/searchtest/:query/:coordinates", (req, res, next) => {
   //   res.send(req.params);
   // });
-  route.post(
+  route.get(
     "/search/:query/:coordinates",
     validator.validateUserCoordinates,
     (req, res, next) => {
