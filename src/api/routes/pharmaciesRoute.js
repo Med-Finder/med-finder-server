@@ -25,7 +25,15 @@ const pharmacyRoute = app => {
     passport.authenticate("jwt", {
       session: false
     }),
-    (req, res, next) => {}
+    (req, res) => {
+      pharmacyServicesInstance.retriveAllMedicine(
+        req.user._id,
+        (err, pharmacieList) => {
+          if (err) return res.send({ err });
+          return res.send(pharmacieList);
+        }
+      );
+    }
   );
 
   route.get("/locateAllPharmacies", async (req, res, next) => {
