@@ -1,17 +1,18 @@
 const { Router } = require("express");
 const { validator } = require("../middlewares");
-const MedicineServices = require("../../services/medicineServices");
+const { medicineServices } = require("../../services");
 
 const route = Router();
 
 const medicineRoute = app => {
   app.use("/medicine", route);
   route.get("/", (req, res) => console.log("medicine route working"));
-  const MedicineServicesInstance = new MedicineServices();
+  const medicineServicesInstance = new medicineServices();
 
   route.post("/save", async (req, res, next) => {
     const medicineInput = { ...req.body };
-    MedicineServicesInstance.createMedicine(medicineInput)
+    medicineServicesInstance
+      .createMedicine(medicineInput)
       .then(data => console.log(data, "\n medicine saved in database"))
       .catch(err => console.log(err, "lerrrrrrrrrrrrrrr"));
     return res.status(200);
@@ -20,7 +21,8 @@ const medicineRoute = app => {
   route.post("/search", async (req, res) => {
     let input = { ...req.body };
     console.log(input);
-    MedicineServicesInstance.searchMedicine(input.query)
+    medicineServicesInstance
+      .searchMedicine(input.query)
       .then(data => res.json(data))
       .catch(err => console.log(err, "dddd"));
   });
@@ -28,7 +30,7 @@ const medicineRoute = app => {
   route.post("/searchForPharmacyLocation", async (req, res) => {
     let input = { ...req.body };
     return res.send(
-      await MedicineServicesInstance.getMedsLocations(input.query)
+      await medicineServicesInstance.getMedsLocations(input.query)
     );
     // var result = [];
     // data.forEach(med => {
@@ -51,7 +53,7 @@ const medicineRoute = app => {
   });
 
   route.get("/getAllMedicines", (req, res) => {
-    MedicineServicesInstance.getAllMedicines();
+    medicineServicesInstance.getAllMedicines();
 
     return res.status(200);
   });
@@ -60,8 +62,8 @@ const medicineRoute = app => {
     "/search/:query/:coordinates",
     validator.validateUserCoordinates,
     (req, res, next) => {
-      const newMedicineServices = new MedicineServices(req.params.coordinates);
-      newMedicineServices.searchMedicine(
+      const newmedicineServices = new medicineServices(req.params.coordinates);
+      newmedicineServices.searchMedicine(
         req.params.query,
         (err, pharmacies) => {
           if (err) return res.send({ err });
@@ -74,7 +76,8 @@ const medicineRoute = app => {
   route.post("/addPharmacy", (req, res, next) => {
     let input = { ...req.body };
     console.log(input);
-    MedicineServicesInstance.addPharmacy(input.query, input.pharmacyId)
+    medicineServicesInstance
+      .addPharmacy(input.query, input.pharmacyId)
       .then(data => {
         console.log("pharmacy added with success", data);
         res.end(data);
