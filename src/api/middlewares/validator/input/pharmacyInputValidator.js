@@ -17,6 +17,12 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
   const coordinates = !isEmpty(req.body.coordinates)
     ? req.body.coordinates
     : "";
+  const openingHour = !isEmpty(req.body.openingHour)
+    ? Math.floor(req.body.openingHour)
+    : 8;
+  const closingHour = !isEmpty(req.body.closingHour)
+    ? Math.floor(req.body.closingHour)
+    : 17;
   const password = !isEmpty(req.body.password) ? req.body.password : "";
   const password2 = !isEmpty(req.body.password2) ? req.body.password2 : "";
   /*
@@ -65,16 +71,27 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
   if (!(Math.abs(coordinates[0]) <= 180 && Math.abs(coordinates[0]) <= 90)) {
     errors.coordinates = `invalid coordinates , you've entered [lng=${coordinates[0]}, lat=${coordinates[1]}]`;
   }
-  //return the error object with any/all errors
-  //as well as an isValid boolean that checks to see
-  //if we have any error
+  //closingHour and openingHour  are valid
+  if (
+    openingHour < 0 ||
+    closingHour < 0 ||
+    openingHour > 24 ||
+    closingHour > 24
+  ) {
+    errors.workingHours = `invalid working hours , you've entered openingHour : ${openingHour} and closingHour : ${closingHour}`;
+  }
   if (!isEmpty(errors)) {
+    //return the error object with any/all errors
+    //as well as an isValid boolean that checks to see
+    //if we have any error
     return res.status(400).send(errors);
   }
   req.body = {
     name,
     address,
     phoneNumber,
+    openingHour,
+    closingHour,
     location: { coordinates, type: "Point" },
     email,
     password
