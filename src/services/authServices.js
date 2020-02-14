@@ -14,6 +14,8 @@ module.exports = class AuthServices {
       name,
       email,
       password,
+      openingHour,
+      closingHour,
       address,
       phoneNumber,
       location,
@@ -25,6 +27,8 @@ module.exports = class AuthServices {
     this.lastName = lastName;
     this.name = name;
     this.email = email;
+    this.openingHour = openingHour;
+    this.closingHour = closingHour;
     this.location = location;
     this.password = password;
     this.address = address;
@@ -74,6 +78,8 @@ module.exports = class AuthServices {
                 lastName: this.lastName,
                 name: this.name,
                 email: this.email,
+                openingHour: this.openingHour,
+                closingHour: this.closingHour,
                 address: this.address,
                 location: this.location,
                 phoneNumber: this.phoneNumber,

@@ -76,7 +76,8 @@ module.exports = function validateRegisterInputPharmacy(req, res, next) {
     openingHour < 0 ||
     closingHour < 0 ||
     openingHour > 24 ||
-    closingHour > 24
+    closingHour > 24 ||
+    openingHour > closingHour
   ) {
     errors.workingHours = `invalid working hours , you've entered openingHour : ${openingHour} and closingHour : ${closingHour}`;
   }
