@@ -79,8 +79,7 @@ module.exports = class MedicineServices {
         $group: {
           _id: "$_id",
           name: { $first: "$name" },
-          lat: { $first: { $arrayElemAt: ["$location.coordinates", 1] } },
-          lng: { $first: { $arrayElemAt: ["$location.coordinates", 0] } }
+          coordinates: { $first: "$location.coordinates" }
         }
       }
     ])
