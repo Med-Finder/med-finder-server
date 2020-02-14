@@ -56,10 +56,6 @@ module.exports = function validateRegisterInputDoctor(req, res, next) {
   if (!Validator.equals(password, password2)) {
     errors.password2 = "Passwords must match";
   }
-  //coordinates empty
-  if (Validator.isEmpty(coordinates)) {
-    errors.coordinates = "Confirm coordinates field is required";
-  }
   //coordinates is an array
   if (!Array.isArray(coordinates)) {
     errors.coordinates =
@@ -75,6 +71,13 @@ module.exports = function validateRegisterInputDoctor(req, res, next) {
   if (!isEmpty(errors)) {
     return res.status(400).send(errors);
   }
-  req.body = { firstName, lastName, speciality, coordinates, email, password };
+  req.body = {
+    firstName,
+    lastName,
+    speciality,
+    location: { coordinates, type: "Point" },
+    email,
+    password
+  };
   next();
 };

@@ -68,7 +68,6 @@ module.exports = class AuthServices {
                 Logger.error("err with hashing 🔥");
                 return callback(err, null);
               }
-              console.log(this.location);
               Logger.debug("making new user 😄");
               const newUser = new this.Model({
                 firstName: this.firstName,
