@@ -54,14 +54,11 @@ const pharmacyRoute = app => {
             return res.send({ err });
           }
           return res.send(
-            data.map(pharmacy => {
-              return {
-                lat: pharmacy.location.coordinates[1],
-                lng: pharmacy.location.coordinates[0],
-                title: pharmacy.name
-                // www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/` no need for this now
-              };
-            })
+            data.map(pharmacy => ({
+              _id: pharmacy._id,
+              name: pharmacy.name,
+              coordinates: pharmacy.location.coordinates
+            }))
           );
         }
       );
@@ -89,15 +86,13 @@ const pharmacyRoute = app => {
   //     .catch(err => console.log(err));
   // });
 
-  route.post("/addMedicine", async (req, res, next) => {
-    let input = { ...req.body };
+  route.post("/addMedicine", (req, res, next) => {
+    let input = { ...req.body }; // has the pharmacy id and the med id
     console.log(input);
     pharmacyServicesInstance
-      .addMedicines(input.query, input.medicine)
-      .then(data => {
-        console.log("medicine added with success", data);
-      })
-      .catch(err => console.log(err));
+      .addMedicines(input.pharmacyId, input.medicineId)
+      .then(msg => res.send(msg))
+      .catch(err => res.send(err));
   });
 };
 
