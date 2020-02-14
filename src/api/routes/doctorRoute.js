@@ -24,7 +24,16 @@ const doctorRoute = app => {
       const newDoctorServices = new DoctorServices(req.params.coordinates);
       newDoctorServices.searchDoctor(req.params.query, (err, doctors) => {
         if (err) return res.send({ err });
-        return res.send(doctors);
+        return res.send(
+          doctors.map(doctor => ({
+            _id: doctor._id,
+            firstName: doctor.firstName,
+            lastName: doctor.lastName,
+            email: doctor.email,
+            speciality: doctor.speciality,
+            coordinates: doctor.location.coordinates
+          }))
+        );
       });
     }
   );
