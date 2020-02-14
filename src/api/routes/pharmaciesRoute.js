@@ -54,14 +54,11 @@ const pharmacyRoute = app => {
             return res.send({ err });
           }
           return res.send(
-            data.map(pharmacy => {
-              return {
-                lat: pharmacy.location.coordinates[1],
-                lng: pharmacy.location.coordinates[0],
-                title: pharmacy.name
-                // www: `https://www.Pharmacy-${pharmacy.name.slice(0, 5)}.com/` no need for this now
-              };
-            })
+            data.map(pharmacy => ({
+              _id: pharmacy._id,
+              name: pharmacy.name,
+              coordinates: pharmacy.location.coordinates
+            }))
           );
         }
       );
