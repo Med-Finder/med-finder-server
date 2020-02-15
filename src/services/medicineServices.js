@@ -1,56 +1,50 @@
 const { MedicinesModel, PharmacyModel } = require("../models");
 
 module.exports = class MedicineServices {
-  constructor(coordinates) {
+  constructor({
+    coordinates,
+    query,
+    distance,
+    name,
+    medicineClass,
+    cost,
+    administrationRoute,
+    dosageForm,
+    dosageschedule,
+    medicineUnit,
+    expiringDay,
+    prescriptionStatus,
+    code,
+    warning,
+    sameAs,
+    quantity
+  } = {}) {
     this.coordinates = coordinates;
+    this.query = query;
+    this.distance = distance;
+    this.name = name;
+    this.medicineClass = medicineClass;
+    this.cost = cost;
+    this.administrationRoute = administrationRoute;
+    this.dosageForm = dosageForm;
+    this.dosageschedule = dosageschedule;
+    this.medicineUnit = medicineUnit;
+    this.expiringDay = expiringDay;
+    this.prescriptionStatus = prescriptionStatus;
+    this.code = code;
+    this.warning = warning;
+    this.sameAs = sameAs;
+    this.quantity = quantity;
   }
-  async createMedicine(medicine) {
-    try {
-      const newMedicine = new MedicinesModel({
-        name: medicine.name,
-        medicineClass: medicine.medicineClass,
-        cost: medicine.cost,
-        administrationRoute: medicine.administrationRoute,
-        dosageForm: medicine.dosageForm,
-        dosageschedule: medicine.dosageschedule,
-        medicineUnit: medicine.medicineUnit,
-        expiringDay: medicine.expiringDay,
-        prescriptionStatus: medicine.prescriptionStatus,
-        code: medicine.code,
-        warning: medicine.warning,
-        sameAs: medicine.sameAs,
-        quantity: medicine.quantity
-      });
 
-      let savedMedicine = await newMedicine.save(); //when fail its goes to catch
-      console.log("medecine saved in database "); //when successsss it print.
-      return savedMedicine;
-    } catch (err) {
-      console.log("err" + err);
-      res.status(500).send(err);
-    }
-  }
-  // async searchMedicine(query) {
-  //   try {
-  //     var searchResult = await MedicinesModel.search(query).populate({
-  //       path: "pharmacyId"
-  //     });
-  //     return searchResult;
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500).send(err);
-  //   }
-  // }
-  searchMedicine(query, callback) {
-    const regExpQuery =
-      query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
+  searchMedicine(callback) {
     PharmacyModel.aggregate([
       {
         $geoNear: {
           near: { type: "Point", coordinates: this.coordinates },
           key: "location",
           distanceField: "dist.calculated",
-          maxDistance: 100000
+          maxDistance: this.distance <= 0 ? 100000 : this.distance
         }
       },
       { $unwind: "$medicines" },
@@ -63,7 +57,14 @@ module.exports = class MedicineServices {
         }
       },
       { $unwind: "$medicines" },
-      { $match: { "medicines.name": regExpQuery } },
+      {
+        $match: {
+          "medicines.name":
+            this.query === '""'
+              ? new RegExp("", "g")
+              : new RegExp(this.query, "g")
+        }
+      },
       {
         $set: {
           open: {
@@ -87,22 +88,26 @@ module.exports = class MedicineServices {
       .catch(err => callback(err, null));
   }
 
-  async getAllMedicines() {
-    var found = await MedicinesModel.find({});
-    return found;
-  }
-  // async addPharmacy(query, pharmacyId) {
-  //   await MedicinesModel.search(query)
-  //     .then(data => {
-  //       data[0].pharmacyId.push(pharmacyId);
-  //       data[0].save();
-  //     })
-  //     .catch(err => console.log(err, "error updating med"));
-  // }
-  async getMedsLocations(query) {
-    const result = await MedicinesModel.search(query).populate({
-      path: "pharmacyId"
-    });
-    return result;
+  async createMedicine() {
+    try {
+      const newMedicine = new MedicinesModel({
+        name: this.name,
+        medicineClass: this.medicineClass,
+        cost: this.cost,
+        administrationRoute: this.administrationRoute,
+        dosageForm: this.dosageForm,
+        dosageschedule: this.dosageschedule,
+        medicineUnit: this.medicineUnit,
+        expiringDay: this.expiringDay,
+        prescriptionStatus: this.prescriptionStatus,
+        code: this.code,
+        warning: this.warning,
+        sameAs: this.sameAs,
+        quantity: this.quantity
+      });
+      return await newMedicine.save(); //when fail its goes to catch
+    } catch (err) {
+      return err;
+    }
   }
 };

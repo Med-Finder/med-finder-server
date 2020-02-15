@@ -10,9 +10,7 @@ const pharmacyRoute = app => {
   const pharmacyServicesInstance = new pharmacyServices();
 
   route.post("/create", async (req, res, next) => {
-    // console.log("req body", req.body);
     const pharmacyInput = { ...req.body };
-
     pharmacyServicesInstance
       .createPharmacy(pharmacyInput)
       .then(data => console.log(data, "created pharmacy"))
@@ -26,6 +24,8 @@ const pharmacyRoute = app => {
       session: false
     }),
     (req, res) => {
+      if (req.authInfo !== "pharacy")
+        return res.status(400).send("not a pharmacy");
       pharmacyServicesInstance.retriveAllMedicine(
         req.user._id,
         (err, pharmacieList) => {
@@ -102,11 +102,10 @@ const pharmacyRoute = app => {
   //     .catch(err => console.log(err));
   // });
 
-  route.post("/addMedicine", (req, res, next) => {
-    let input = { ...req.body }; // has the pharmacy id and the med id
-    console.log(input);
+  route.post("/addMedicine", (req, res) => {
+    const pharmacyServicesInstance = new pharmacyServices(req.body);
     pharmacyServicesInstance
-      .addMedicines(input.pharmacyId, input.medicineId)
+      .addMedicines()
       .then(msg => res.send(msg))
       .catch(err => res.send(err));
   });

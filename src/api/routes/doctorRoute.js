@@ -9,18 +9,10 @@ const doctorRoute = app => {
 
   route.get("/", (req, res) => console.log("\n doctor route working"));
 
-  route.post("/register", async (req, res, next) => {
-    // const doctorInput = { ...req.body };
-    // doctorServicesInstance
-    //   .createDoctor(doctorInput)
-    //   .then(data => console.log(data, "created doctor"))
-    //   .catch(err => console.log(err));
-    // return res.status(200);
-  });
   route.get(
     "/search/:query/:coordinates",
     validator.validateUserCoordinates,
-    (req, res, next) => {
+    (req, res) => {
       const newDoctorServices = new DoctorServices(req.params.coordinates);
       newDoctorServices.searchDoctor(req.params.query, (err, doctors) => {
         if (err) return res.send({ err });

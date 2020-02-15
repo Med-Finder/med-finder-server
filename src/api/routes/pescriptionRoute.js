@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const passport = require("passport");
 const { pescriptionServices } = require("../../services");
-// const Logger = require("../../loaders/logger");
 
 const route = Router();
 const pescriptionRoute = app => {

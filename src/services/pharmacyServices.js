@@ -1,5 +1,9 @@
 const { PharmacyModel, MedicinesModel } = require("../models");
 module.exports = class PharmacyServices {
+  constructor({ pharmacyId, medicineId } = {}) {
+    this.pharmacyId = pharmacyId;
+    this.medicineId = medicineId;
+  }
   async locatePharmacies() {
     var found = await PharmacyModel.find({});
     return found;
@@ -34,15 +38,15 @@ module.exports = class PharmacyServices {
       .catch(err => callback(err, null));
   }
 
-  async addMedicines(pharmacyId, medicineId) {
+  async addMedicines() {
     try {
-      await PharmacyModel.findByIdAndUpdate(pharmacyId, {
-        $push: { medicines: medicineId }
+      let phar = await PharmacyModel.findByIdAndUpdate(this.pharmacyId, {
+        $push: { medicines: this.medicineId }
       });
-      await MedicinesModel.findByIdAndUpdate(medicineId, {
-        $push: { pharmacyId: pharmacyId }
+      let med = await MedicinesModel.findByIdAndUpdate(this.medicineId, {
+        $push: { pharmacyId: this.pharmacyId }
       });
-      return "done adding";
+      return !(phar && med) ? "invalid ids" : "done";
     } catch (err) {
       return err;
     }
