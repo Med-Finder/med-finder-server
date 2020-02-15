@@ -25,6 +25,7 @@ const pescriptionRoute = app => {
     }
   );
   route.post("/get", (req, res) => {
+    //TODO : make it an get request that takes the ID
     const newPescription = new pescriptionServices(req.body);
     newPescription.get((err, pescription) => {
       if (err) {

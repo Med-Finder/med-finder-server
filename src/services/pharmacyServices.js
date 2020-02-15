@@ -5,7 +5,7 @@ module.exports = class PharmacyServices {
     this.medicineId = medicineId;
     this.query = query;
     this.coordinates = coordinates;
-    this.distance = distance;
+    this.distance = Number(distance);
   }
   async locatePharmacies() {
     var found = await PharmacyModel.find({});
@@ -20,7 +20,7 @@ module.exports = class PharmacyServices {
             type: "Point",
             coordinates: this.coordinates
           },
-          $maxDistance: this.distance <= 0 ? 100000 : Number(this.distance) // in meter
+          $maxDistance: this.distance > 0 ? this.distance : 1000000 // in meter
         }
       },
       openingHour: { $lt: new Date().getHours() },
