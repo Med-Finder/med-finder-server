@@ -20,8 +20,8 @@ module.exports = class MedicineServices {
     quantity
   } = {}) {
     this.coordinates = coordinates;
-    this.query = query;
-    this.distance = Number(distance);
+    this.query = query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
+    this.distance = Number(distance) > 0 ? Number(distance) : 1000000;
     this.name = name;
     this.medicineClass = medicineClass;
     this.cost = cost;
@@ -44,7 +44,7 @@ module.exports = class MedicineServices {
           near: { type: "Point", coordinates: this.coordinates },
           key: "location",
           distanceField: "dist.calculated",
-          maxDistance: this.distance > 0 ? this.distance : 1000000
+          maxDistance: this.distance
         }
       },
       { $unwind: "$medicines" },
@@ -59,10 +59,7 @@ module.exports = class MedicineServices {
       { $unwind: "$medicines" },
       {
         $match: {
-          "medicines.name":
-            this.query === '""'
-              ? new RegExp("", "g")
-              : new RegExp(this.query, "g")
+          "medicines.name": this.query
         }
       },
       {
