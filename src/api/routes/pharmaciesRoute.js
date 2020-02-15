@@ -61,24 +61,18 @@ const pharmacyRoute = app => {
   route.get(
     "/search/:query/:coordinates/:distance",
     validator.validateUserCoordinates,
-    (req, res, next) => {
-      pharmacyServicesInstance.searchPharmacies(
-        req.params.query,
-        req.params.coordinates,
-        req.params.distance,
-        (err, data) => {
-          if (err) {
-            return res.send({ err });
-          }
-          return res.send(
-            data.map(pharmacy => ({
-              _id: pharmacy._id,
-              name: pharmacy.name,
-              coordinates: pharmacy.location.coordinates
-            }))
-          );
-        }
-      );
+    (req, res) => {
+      const pharmacyServicesInstance = new pharmacyServices(req.params);
+      pharmacyServicesInstance.searchPharmacies((err, data) => {
+        if (err) return res.send({ err });
+        return res.send(
+          data.map(pharmacy => ({
+            _id: pharmacy._id,
+            name: pharmacy.name,
+            coordinates: pharmacy.location.coordinates
+          }))
+        );
+      });
     }
   );
 

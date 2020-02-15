@@ -1,28 +1,32 @@
 const { PharmacyModel, MedicinesModel } = require("../models");
 module.exports = class PharmacyServices {
-  constructor({ pharmacyId, medicineId } = {}) {
+  constructor({ pharmacyId, medicineId, query, coordinates, distance } = {}) {
     this.pharmacyId = pharmacyId;
     this.medicineId = medicineId;
+    this.query = query;
+    this.coordinates = coordinates;
+    this.distance = distance;
   }
   async locatePharmacies() {
     var found = await PharmacyModel.find({});
     return found;
   }
 
-  searchPharmacies(query, userCoordinates, distance, callback) {
+  searchPharmacies(callback) {
     PharmacyModel.find({
       location: {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: userCoordinates
+            coordinates: this.coordinates
           },
-          $maxDistance: distance <= 0 ? 100000 : Number(distance) // in meter
+          $maxDistance: this.distance <= 0 ? 100000 : Number(this.distance) // in meter
         }
       },
       openingHour: { $lt: new Date().getHours() },
       closingHour: { $gt: new Date().getHours() },
-      name: query === '""' ? new RegExp("", "g") : new RegExp(query, "g")
+      name:
+        this.query === '""' ? new RegExp("", "g") : new RegExp(this.query, "g")
     })
       .then(data => callback(null, data))
       .catch(err => callback(err, null));
