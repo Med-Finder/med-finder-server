@@ -14,7 +14,7 @@ module.exports = class DoctorServices {
             type: "Point",
             coordinates: this.userCoordinates
           },
-          $maxDistance: 100000 // in meter
+          $maxDistance: 100000000 // in meter
         }
       },
       openingHour: { $lt: new Date().getHours() },
