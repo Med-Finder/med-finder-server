@@ -15,8 +15,8 @@ const pescriptionRoute = app => {
         return res.status(400).send("not a doctor");
       }
       req.body.doctor = req.user._id;
-      const newPescription = new pescriptionServices(req.body);
-      newPescription.create((err, pescription) => {
+      const newPescriptionServices = new pescriptionServices(req.body);
+      newPescriptionServices.create((err, pescription) => {
         if (err) {
           return res.send(err);
         }
@@ -25,8 +25,8 @@ const pescriptionRoute = app => {
     }
   );
   route.get("/get/:id", (req, res) => {
-    const newPescription = new pescriptionServices(req.params);
-    newPescription.get((err, pescription) => {
+    const newPescriptionServices = new pescriptionServices(req.params);
+    newPescriptionServices.get((err, pescription) => {
       if (err) {
         return res.send(err);
       }

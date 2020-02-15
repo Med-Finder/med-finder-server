@@ -4,6 +4,7 @@ const MedicinesModel = require("./Medicines");
 const PatientModel = require("./Patient");
 const PescriptionModel = require("./Pescription");
 const PharmacyModel = require("./Pharmacy");
+const AppointmentModel = require("./Appointment");
 
 module.exports = {
   DoctorModel,
@@ -11,5 +12,6 @@ module.exports = {
   MedicinesModel,
   PatientModel,
   PescriptionModel,
-  PharmacyModel
+  PharmacyModel,
+  AppointmentModel
 };
