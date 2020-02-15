@@ -59,12 +59,13 @@ const pharmacyRoute = app => {
   //   res.send(req.params);
   // });
   route.get(
-    "/search/:query/:coordinates",
+    "/search/:query/:coordinates/:distance",
     validator.validateUserCoordinates,
     (req, res, next) => {
       pharmacyServicesInstance.searchPharmacies(
         req.params.query,
         req.params.coordinates,
+        req.params.distance,
         (err, data) => {
           if (err) {
             return res.send({ err });

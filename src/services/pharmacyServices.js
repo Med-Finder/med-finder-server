@@ -9,9 +9,7 @@ module.exports = class PharmacyServices {
     return found;
   }
 
-  searchPharmacies(query, userCoordinates, callback) {
-    const regExpQuery =
-      query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
+  searchPharmacies(query, userCoordinates, distance, callback) {
     PharmacyModel.find({
       location: {
         $near: {
@@ -19,12 +17,12 @@ module.exports = class PharmacyServices {
             type: "Point",
             coordinates: userCoordinates
           },
-          $maxDistance: 100000 // in meter
+          $maxDistance: distance <= 0 ? 100000 : Number(distance) // in meter
         }
       },
       openingHour: { $lt: new Date().getHours() },
       closingHour: { $gt: new Date().getHours() },
-      name: regExpQuery
+      name: query === '""' ? new RegExp("", "g") : new RegExp(query, "g")
     })
       .then(data => callback(null, data))
       .catch(err => callback(err, null));

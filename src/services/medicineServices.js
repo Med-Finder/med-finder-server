@@ -44,7 +44,7 @@ module.exports = class MedicineServices {
           near: { type: "Point", coordinates: this.coordinates },
           key: "location",
           distanceField: "dist.calculated",
-          maxDistance: this.distance <= 0 ? 100000 : this.distance
+          maxDistance: this.distance <= 0 ? 100000 : Number(this.distance)
         }
       },
       { $unwind: "$medicines" },
