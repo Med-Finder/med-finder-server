@@ -3,9 +3,9 @@ module.exports = class PharmacyServices {
   constructor({ pharmacyId, medicineId, query, coordinates, distance } = {}) {
     this.pharmacyId = pharmacyId;
     this.medicineId = medicineId;
-    this.query = query;
+    this.query = query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
     this.coordinates = coordinates;
-    this.distance = Number(distance);
+    this.distance = Number(distance) > 0 ? Number(distance) : 1000000;
   }
   async locatePharmacies() {
     var found = await PharmacyModel.find({});
@@ -20,13 +20,12 @@ module.exports = class PharmacyServices {
             type: "Point",
             coordinates: this.coordinates
           },
-          $maxDistance: this.distance > 0 ? this.distance : 1000000 // in meter
+          $maxDistance: this.distance // in meter
         }
       },
       openingHour: { $lt: new Date().getHours() },
       closingHour: { $gt: new Date().getHours() },
-      name:
-        this.query === '""' ? new RegExp("", "g") : new RegExp(this.query, "g")
+      name: this.query
     })
       .then(data => callback(null, data))
       .catch(err => callback(err, null));
