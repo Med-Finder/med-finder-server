@@ -38,17 +38,17 @@ const appointmentRoute = app => {
       });
     }
   );
-  route.post(
-    "/get/:query",
+  route.get(
+    "/getAll",
     passport.authenticate("jwt", {
       session: false
     }),
     (req, res) => {
-      if (req.authInfo !== "doctor" || req.authInfo !== "patient") {
+      console.log(req.authInfo);
+      if (req.authInfo !== "doctor" && req.authInfo !== "patient")
         return res.status(400).send("not a doctor or a patient");
-      }
       const newAppointmentServices = new appointmentServices(req.params);
-      newAppointmentServices.approve(req.user._id, (err, msg) => {
+      newAppointmentServices.getAll((err, msg) => {
         if (err) return res.send(err);
         return res.send(msg);
       });

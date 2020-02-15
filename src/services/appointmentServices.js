@@ -44,4 +44,54 @@ module.exports = class PescriptionService {
       );
     });
   }
+  getAll(callback) {
+    AppointmentModel.aggregate([
+      { $sort: { time: 1 } },
+      {
+        $set: {
+          open: {
+            $gte: ["$time", new Date()]
+          }
+        }
+      },
+      { $match: { open: true } },
+      {
+        $lookup: {
+          from: "doctors",
+          localField: "doctor",
+          foreignField: "_id",
+          as: "doctor"
+        }
+      },
+      { $unwind: "$doctor" },
+      {
+        $lookup: {
+          from: "patients",
+          localField: "patient",
+          foreignField: "_id",
+          as: "patient"
+        }
+      },
+      { $unwind: "$patient" },
+      {
+        $project: {
+          "doctor.patient": 0,
+          "doctor.pescriptions": 0,
+          "doctor.patients": 0,
+          "doctor.openingHour": 0,
+          "doctor.closingHour": 0,
+          "doctor.password": 0,
+          "doctor.createdAt": 0,
+          "doctor.updatedAt": 0,
+          "patient.medicalRecord": 0,
+          "patient.appointment": 0,
+          "patient.createdAt": 0,
+          "patient.updatedAt": 0,
+          open: 0
+        }
+      }
+    ])
+      .then(appointments => callback(null, appointments))
+      .catch(err => callback(err, null));
+  }
 };
