@@ -7,7 +7,7 @@ const appointmentRoute = app => {
   app.use("/appointment", route);
 
   route.post(
-    "/booking/:doctorId",
+    "/booking/:doctorId/:date",
     passport.authenticate("jwt", {
       session: false
     }),
@@ -39,12 +39,11 @@ const appointmentRoute = app => {
     }
   );
   route.get(
-    "/getAll",
+    "/get/:date",
     passport.authenticate("jwt", {
       session: false
     }),
     (req, res) => {
-      console.log(req.authInfo);
       if (req.authInfo !== "doctor" && req.authInfo !== "patient")
         return res.status(400).send("not a doctor or a patient");
       const newAppointmentServices = new appointmentServices(req.params);

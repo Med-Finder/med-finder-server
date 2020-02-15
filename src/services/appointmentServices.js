@@ -1,17 +1,18 @@
 const { AppointmentModel, PatientModel } = require("../models");
 const Logger = require("../loaders/logger");
 module.exports = class PescriptionService {
-  constructor({ pateintId, doctorId, appointmentId, query } = {}) {
+  constructor({ pateintId, doctorId, appointmentId, date } = {}) {
     this.pateintId = pateintId;
     this.doctorId = doctorId;
     this.appointmentId = appointmentId;
-    this.query = query;
+    this.date =
+      Object.prototype.toString.call(date) === "[object Date]" || new Date();
   }
   book(patientId, callback) {
     const newAppointment = new AppointmentModel({
       doctor: this.doctorId,
       patient: patientId,
-      time: new Date()
+      time: this.date
     });
     newAppointment
       .save()
@@ -27,14 +28,8 @@ module.exports = class PescriptionService {
   }
   approve(doctorId, callback) {
     AppointmentModel.findById(this.appointmentId).then(appointment => {
-      console.log(
-        doctorId,
-        appointment.doctor,
-        doctorId.toString() !== appointment.doctor.toString()
-      );
-      if (doctorId.toString() !== appointment.doctor.toString()) {
+      if (doctorId.toString() !== appointment.doctor.toString())
         return callback({ error: "not the same doctor" }, null);
-      }
       appointment.confirmed = true;
       return callback(
         null,
@@ -50,7 +45,7 @@ module.exports = class PescriptionService {
       {
         $set: {
           open: {
-            $gte: ["$time", new Date()]
+            $gte: ["$time", this.date]
           }
         }
       },
@@ -87,6 +82,7 @@ module.exports = class PescriptionService {
           "patient.appointment": 0,
           "patient.createdAt": 0,
           "patient.updatedAt": 0,
+          "patient.password": 0,
           open: 0
         }
       }
