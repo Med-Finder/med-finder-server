@@ -13,8 +13,15 @@ const medicineRoute = app => {
     const medicineInput = { ...req.body };
     medicineServicesInstance
       .createMedicine(medicineInput)
-      .then(data => console.log(data, "\n medicine saved in database"))
-      .catch(err => console.log(err, "lerrrrrrrrrrrrrrr"));
+      // FIXME: added the response when saving the medicines
+      .then(data => {
+        res.json(data);
+        console.log(data, "\n medicine saved in database");
+      })
+      .catch(err => {
+        res.send({ err });
+        console.log(err, "lerrrrrrrrrrrrrrr");
+      });
     return res.status(200);
   });
 
