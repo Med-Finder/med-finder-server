@@ -10,9 +10,7 @@ const pharmacyRoute = app => {
   const pharmacyServicesInstance = new pharmacyServices();
 
   route.post("/create", async (req, res, next) => {
-    // console.log("req body", req.body);
     const pharmacyInput = { ...req.body };
-
     pharmacyServicesInstance
       .createPharmacy(pharmacyInput)
       .then(data => console.log(data, "created pharmacy"))
@@ -25,7 +23,17 @@ const pharmacyRoute = app => {
     passport.authenticate("jwt", {
       session: false
     }),
-    (req, res, next) => {}
+    (req, res) => {
+      if (req.authInfo !== "pharacy")
+        return res.status(400).send("not a pharmacy");
+      pharmacyServicesInstance.retriveAllMedicine(
+        req.user._id,
+        (err, pharmacieList) => {
+          if (err) return res.send({ err });
+          return res.send(pharmacieList);
+        }
+      );
+    }
   );
 
   route.get("/locateAllPharmacies", async (req, res, next) => {
@@ -51,25 +59,20 @@ const pharmacyRoute = app => {
   //   res.send(req.params);
   // });
   route.get(
-    "/search/:query/:coordinates",
+    "/search/:query/:coordinates/:distance",
     validator.validateUserCoordinates,
-    (req, res, next) => {
-      pharmacyServicesInstance.searchPharmacies(
-        req.params.query,
-        req.params.coordinates,
-        (err, data) => {
-          if (err) {
-            return res.send({ err });
-          }
-          return res.send(
-            data.map(pharmacy => ({
-              _id: pharmacy._id,
-              name: pharmacy.name,
-              coordinates: pharmacy.location.coordinates
-            }))
-          );
-        }
-      );
+    (req, res) => {
+      const pharmacyServicesInstance = new pharmacyServices(req.params);
+      pharmacyServicesInstance.searchPharmacies((err, data) => {
+        if (err) return res.send({ err });
+        return res.send(
+          data.map(pharmacy => ({
+            _id: pharmacy._id,
+            name: pharmacy.name,
+            coordinates: pharmacy.location.coordinates
+          }))
+        );
+      });
     }
   );
 
@@ -94,11 +97,10 @@ const pharmacyRoute = app => {
   //     .catch(err => console.log(err));
   // });
 
-  route.post("/addMedicine", (req, res, next) => {
-    let input = { ...req.body }; // has the pharmacy id and the med id
-    console.log(input);
+  route.post("/addMedicine", (req, res) => {
+    const pharmacyServicesInstance = new pharmacyServices(req.body);
     pharmacyServicesInstance
-      .addMedicines(input.pharmacyId, input.medicineId)
+      .addMedicines()
       .then(msg => res.send(msg))
       .catch(err => res.send(err));
   });

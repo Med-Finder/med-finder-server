@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { validator } = require("../middlewares");
-const { DoctorServices } = require("../../services");
+const { doctorServices } = require("../../services");
 
 const route = Router();
 
@@ -9,20 +9,12 @@ const doctorRoute = app => {
 
   route.get("/", (req, res) => console.log("\n doctor route working"));
 
-  route.post("/register", async (req, res, next) => {
-    // const doctorInput = { ...req.body };
-    // doctorServicesInstance
-    //   .createDoctor(doctorInput)
-    //   .then(data => console.log(data, "created doctor"))
-    //   .catch(err => console.log(err));
-    // return res.status(200);
-  });
   route.get(
-    "/search/:query/:coordinates",
+    "/search/:query/:coordinates/:distance",
     validator.validateUserCoordinates,
-    (req, res, next) => {
-      const newDoctorServices = new DoctorServices(req.params.coordinates);
-      newDoctorServices.searchDoctor(req.params.query, (err, doctors) => {
+    (req, res) => {
+      const newDoctorServices = new doctorServices(req.params);
+      newDoctorServices.searchDoctor((err, doctors) => {
         if (err) return res.send({ err });
         return res.send(
           doctors.map(doctor => ({

@@ -56,7 +56,8 @@ const Doctor = new mongoose.Schema(
     ],
     pescriptions: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Pescription" } // should we have this
-    ]
+    ],
+    appointment: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }]
   },
   { timestamps: true }
 );

@@ -1,91 +1,53 @@
 const { PharmacyModel, MedicinesModel } = require("../models");
 module.exports = class PharmacyServices {
-  async createPharmacy(pharmacy) {
-    try {
-      const newPharmacy = new PharmacyModel({
-        name: pharmacy.name,
-        address: pharmacy.address,
-        phoneNumber: pharmacy.phoneNumber,
-        // lat: pharmacy.lat,
-        // lng: pharmacy.lng,
-        location: pharmacy.location,
-        openingHour: pharmacy.openingHour,
-        closingHour: pharmacy.closingHour,
-        feedbacks: pharmacy.feedbacks,
-        password: pharmacy.password
-      });
-
-      let savedPharmacy = await newPharmacy.save(); //when fail its goes to catch
-      console.log("pharmacy created in database in database"); //when successsss it print.
-      return savedPharmacy;
-    } catch (err) {
-      console.log("err" + err);
-      res.status(500).send(err);
-    }
+  constructor({ pharmacyId, medicineId, query, coordinates, distance } = {}) {
+    this.pharmacyId = pharmacyId;
+    this.medicineId = medicineId;
+    this.query = query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
+    this.coordinates = coordinates;
+    this.distance = Number(distance) > 0 ? Number(distance) : 1000000;
   }
   async locatePharmacies() {
     var found = await PharmacyModel.find({});
     return found;
   }
-  searchPharmacies(query, userCoordinates, callback) {
-    const regExpQuery =
-      query === '""' ? new RegExp("", "g") : new RegExp(query, "g");
+
+  searchPharmacies(callback) {
     PharmacyModel.find({
       location: {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: userCoordinates
+            coordinates: this.coordinates
           },
-          $maxDistance: 100000 // in meter
+          $maxDistance: this.distance // in meter
         }
       },
       openingHour: { $lt: new Date().getHours() },
       closingHour: { $gt: new Date().getHours() },
-      name: regExpQuery
+      name: this.query
     })
       .then(data => callback(null, data))
       .catch(err => callback(err, null));
   }
 
-  // async searchPharmacies(query, userCoordinates) {
-  //   try {
-  //     console.log(query, userCoordinates);
-  //     var searchResult = await PharmacyModel.find({
-  //       location: {
-  //         $near: {
-  //           $geometry: {
-  //             type: "Point",
-  //             coordinates: [userCoordinates.lng, userCoordinates.lat]
-  //           },
-  //           $maxDistance: 10000 // in meter
-  //         }
-  //       }
-  //     })
-  //       // .search(query)
-  //       .populate({
-  //         path: "medicines"
-  //       })
-  //       .lean();
-  //     searchResult = searchResult.filter(
-  //       pharmacy =>
-  //         pharmacy.openingHour < new Date().getHours() &&
-  //         pharmacy.closingHour > new Date().getHours()
-  //     );
-  //     return searchResult;
-  //   } catch (e) {
-  //     return e;
-  //   }
-  // }
-  async addMedicines(pharmacyId, medicineId) {
+  retriveAllMedicine(pharmacyId, callback) {
+    PharmacyModel.findById(pharmacyId)
+      .populate("medicines")
+      .then(res => res.medicines)
+      .then(pharmacieList => callback(null, pharmacieList))
+      .catch(err => callback(err, null));
+  }
+
+  async addMedicines() {
     try {
-      await PharmacyModel.findByIdAndUpdate(pharmacyId, {
-        $push: { medicines: medicineId }
+      let phar = await PharmacyModel.findByIdAndUpdate(this.pharmacyId, {
+        $push: { medicines: this.medicineId }
       });
-      await MedicinesModel.findByIdAndUpdate(medicineId, {
-        $push: { pharmacyId: pharmacyId }
+      let med = await MedicinesModel.findByIdAndUpdate(this.medicineId, {
+        $push: { pharmacyId: this.pharmacyId }
       });
-      return "done adding";
+      return !(phar && med) ? "invalid ids" : "done";
     } catch (err) {
       return err;
     }
