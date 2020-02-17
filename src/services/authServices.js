@@ -145,6 +145,8 @@ module.exports = class AuthServices {
                     "done creating the token sending back to the controller 🎮"
                   );
                   return callback(null, {
+                    // FIXME: added a user obj to get the pharmacy's id
+                    user: user,
                     success: true,
                     "user type": this.type,
                     token: "Bearer " + token
