@@ -1,10 +1,20 @@
 const { AppointmentModel, PatientModel } = require("../models");
 const Logger = require("../loaders/logger");
 module.exports = class PescriptionService {
-  constructor({ pateintId, doctorId, appointmentId, date } = {}) {
+  constructor({
+    pateintId,
+    doctorId,
+    appointmentId,
+    date,
+    confirmedState
+  } = {}) {
     this.pateintId = pateintId;
     this.doctorId = doctorId;
     this.appointmentId = appointmentId;
+    this.confirmedState =
+      confirmedState === "true" || confirmedState === "false"
+        ? JSON.parse(confirmedState)
+        : false;
     this.date =
       Object.prototype.toString.call(date) === "[object Date]" || new Date();
   }
@@ -39,7 +49,8 @@ module.exports = class PescriptionService {
       );
     });
   }
-  getAll(callback) {
+  getAll(userId, callback) {
+    console.log(this.confirmedState);
     AppointmentModel.aggregate([
       { $sort: { time: 1 } },
       {
@@ -68,6 +79,19 @@ module.exports = class PescriptionService {
         }
       },
       { $unwind: "$patient" },
+      //   {
+      //     $match: {
+      //       $and: [
+      //         { confirmed: this.confirmedState },
+      //         { $or: [{ "patient._id": userId }, { "doctor._id": userId }] }
+      //       ]
+      //     }
+      //   },
+      {
+        $match: {
+          confirmed: this.confirmedState
+        }
+      },
       {
         $project: {
           "doctor.patient": 0,

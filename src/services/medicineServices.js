@@ -62,6 +62,7 @@ module.exports = class MedicineServices {
           "medicines.name": this.query
         }
       },
+
       {
         $set: {
           open: {
